@@ -12,7 +12,7 @@ import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Tasks
 import com.infendro.tasks2do.Task
 
-class Adapter_Tasks(private val activity: Activity, private val tasks: Tasks) : RecyclerView.Adapter<ViewHolder>() {
+class Adapter_CheckedTasks(private val activity: Activity, private val tasks: Tasks) : RecyclerView.Adapter<ViewHolder>() {
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -32,10 +32,10 @@ class Adapter_Tasks(private val activity: Activity, private val tasks: Tasks) : 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = tasks.tasks.size
+    override fun getItemCount() = tasks.checkedTasks.size
 
     fun getItem(position: Int) : Task {
-        return tasks.tasks[position]
+        return tasks.checkedTasks[position]
     }
 
 }
