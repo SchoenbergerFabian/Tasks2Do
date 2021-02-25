@@ -2,17 +2,12 @@ package com.infendro.tasks2do.activities.main
 
 import android.app.Activity
 import android.view.*
-import android.widget.Button
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SortedList
-import androidx.recyclerview.widget.SortedListAdapterCallback
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Tasks
+import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Task
 
-class Adapter_Tasks(private val activity: Activity, private val tasks: Tasks) : RecyclerView.Adapter<ViewHolder>() {
+class Adapter_UncheckedTasks(private val activity: Activity, private val list: List) : RecyclerView.Adapter<ViewHolder>() {
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -20,7 +15,7 @@ class Adapter_Tasks(private val activity: Activity, private val tasks: Tasks) : 
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.view_task, viewGroup, false)
 
-        return ViewHolder(activity,view,tasks)
+        return ViewHolder(activity,view,list)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -32,10 +27,10 @@ class Adapter_Tasks(private val activity: Activity, private val tasks: Tasks) : 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = tasks.tasks.size
+    override fun getItemCount() = list.uncheckedTasks.size
 
     fun getItem(position: Int) : Task {
-        return tasks.tasks[position]
+        return list.uncheckedTasks[position]
     }
 
 }

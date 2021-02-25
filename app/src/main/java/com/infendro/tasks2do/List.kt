@@ -1,14 +1,10 @@
 package com.infendro.tasks2do
 
-import androidx.recyclerview.widget.SortedList
-import androidx.recyclerview.widget.SortedListAdapterCallback
-
-class Tasks {
-    val tasks = ArrayList<Task>()
-    val checkedTasks = ArrayList<Task>()
+class List(var title: String, val uncheckedTasks: ArrayList<Task>, val checkedTasks: ArrayList<Task>) {
+    constructor() : this("",ArrayList<Task>(),ArrayList<Task>())
 
     fun check(position: Int){
-        val task = tasks.removeAt(position)
+        val task = uncheckedTasks.removeAt(position)
         task.checked=true
         checkedTasks.add(0,task)
 
@@ -21,7 +17,7 @@ class Tasks {
     fun uncheck(position: Int){
         val task = checkedTasks.removeAt(position)
         task.checked=false
-        tasks.add(0,task)
+        uncheckedTasks.add(0,task)
 
         println(task.checked)
         println(task.title)

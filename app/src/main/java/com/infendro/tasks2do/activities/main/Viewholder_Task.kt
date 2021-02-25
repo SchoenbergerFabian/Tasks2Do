@@ -2,16 +2,14 @@ package com.infendro.tasks2do.activities.main
 
 import android.app.Activity
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
-import com.infendro.tasks2do.Tasks
+import com.infendro.tasks2do.List
 
-class ViewHolder(private val activity: Activity, view: View, val tasks: Tasks) : RecyclerView.ViewHolder(view) {
+class ViewHolder(private val activity: Activity, view: View, val list: List) : RecyclerView.ViewHolder(view) {
 
     private val button_check: ImageView = view.findViewById(R.id.button_check)
 
@@ -25,17 +23,28 @@ class ViewHolder(private val activity: Activity, view: View, val tasks: Tasks) :
         button_check.setOnClickListener {
             when(task.checked){
                 true -> {
-                    tasks.uncheck(adapterPosition)
+                    list.uncheck(adapterPosition)
+
+                    //update image
                     setCheckedImage()
+
+                    //updating with animations
                     MainActivity.adapter_checked.notifyItemRemoved(adapterPosition)
                     MainActivity.adapter_checked.notifyItemRangeChanged(adapterPosition, MainActivity.adapter_checked.getItemCount());
-                    MainActivity.adapter.notifyItemInserted(0)
+                    MainActivity.adapter_unchecked.notifyItemInserted(0)
+
+                    //show empty message if empty
+                    MainActivity.showEmpty(list)
                 }
                 false -> {
-                    tasks.check(adapterPosition)
+                    list.check(adapterPosition)
+
+                    //update image
                     setCheckedImage()
-                    MainActivity.adapter.notifyItemRemoved(adapterPosition)
-                    MainActivity.adapter.notifyItemRangeChanged(adapterPosition, MainActivity.adapter.getItemCount());
+
+                    //updating with animations
+                    MainActivity.adapter_unchecked.notifyItemRemoved(adapterPosition)
+                    MainActivity.adapter_unchecked.notifyItemRangeChanged(adapterPosition, MainActivity.adapter_unchecked.getItemCount());
                     MainActivity.adapter_checked.notifyItemInserted(0)
                 }
             }
