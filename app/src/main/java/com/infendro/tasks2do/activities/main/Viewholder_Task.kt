@@ -68,9 +68,14 @@ class ViewHolder(private val activity: Activity, view: View, val list: List) : R
         }
 
         val due = task.getDueString(activity.getString(R.string.pattern_date),activity.getString(R.string.pattern_time))
-        if(due!=null){
+        if(due!=null&&!task.checked){
             textview_due.text = due
             textview_due.visibility = View.VISIBLE
+            if(task.isOver()){
+                textview_due.setTextColor(activity.getColor(R.color.due_late))
+            }else{
+                textview_due.setTextColor(activity.getColor(R.color.due))
+            }
         }else{
             textview_due.text = ""
             textview_due.visibility = View.GONE

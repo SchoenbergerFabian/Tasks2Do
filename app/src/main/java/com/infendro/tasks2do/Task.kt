@@ -23,6 +23,29 @@ class Task(var title: String, var details: String?, var due_date: LocalDate?, va
         checked = !checked
     }
 
+    fun isOver() : Boolean {
+        val now_date = LocalDate.now()
+        if(due_date!=null){
+            if(now_date.isAfter(due_date)){
+                return true
+            }else if(now_date.isEqual(due_date)){
+                val now_time = LocalTime.now()
+
+                if(due_time!=null){
+                    if(now_time.hour>due_time!!.hour){
+                        return true
+                    }else if(now_time.hour==due_time!!.hour){
+                        if(now_time.minute>due_time!!.minute){
+                            return true
+                        }
+                    }
+                }
+            }
+        }
+
+        return false
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
