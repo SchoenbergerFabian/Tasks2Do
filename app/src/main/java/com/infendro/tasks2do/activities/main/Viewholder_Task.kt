@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.infendro.tasks2do.activities.main.fragments.main.Fragment_Main
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.List
@@ -21,34 +22,38 @@ class ViewHolder(private val activity: Activity, view: View, val list: List) : R
 
     init {
         button_check.setOnClickListener {
-            when(task.checked){
-                true -> {
-                    list.uncheck(adapterPosition)
+            if(adapterPosition!=-1){
+                when(task.checked){
+                    true -> {
+                        list.uncheck(adapterPosition)
 
-                    //update image
-                    setCheckedImage()
+                        //update image
+                        setCheckedImage()
 
-                    //updating with animations
-                    MainActivity.adapter_checked.notifyItemRemoved(adapterPosition)
-                    MainActivity.adapter_checked.notifyItemRangeChanged(adapterPosition, MainActivity.adapter_checked.getItemCount());
-                    MainActivity.adapter_unchecked.notifyItemInserted(0)
+                        //updating with animations
+                        Fragment_Main.adapter_unchecked.notifyItemInserted(0)
+                        Fragment_Main.adapter_checked.notifyItemRemoved(adapterPosition)
+                        Fragment_Main.adapter_checked.notifyItemRangeChanged(adapterPosition, Fragment_Main.adapter_checked.itemCount)
 
-                    //show empty message if empty
-                    MainActivity.showEmpty(list)
+                    }
+                    false -> {
+                        list.check(adapterPosition)
+
+                        //update image
+                        setCheckedImage()
+
+                        //updating with animations
+                        Fragment_Main.adapter_unchecked.notifyItemRemoved(adapterPosition)
+                        Fragment_Main.adapter_unchecked.notifyItemRangeChanged(adapterPosition, Fragment_Main.adapter_unchecked.itemCount);
+                        Fragment_Main.adapter_checked.notifyItemInserted(0)
+
+                    }
                 }
-                false -> {
-                    list.check(adapterPosition)
-
-                    //update image
-                    setCheckedImage()
-
-                    //updating with animations
-                    MainActivity.adapter_unchecked.notifyItemRemoved(adapterPosition)
-                    MainActivity.adapter_unchecked.notifyItemRangeChanged(adapterPosition, MainActivity.adapter_unchecked.getItemCount());
-                    MainActivity.adapter_checked.notifyItemInserted(0)
-                }
+                //show completed tasks if not empty, don't show if empty
+                Fragment_Main.showEmpty(list)
             }
         }
+
     }
 
     fun bind(task : Task){
@@ -58,9 +63,14 @@ class ViewHolder(private val activity: Activity, view: View, val list: List) : R
 
         textview_title.text = task.title
 
-        val details = task.details
-        if(details!=null){
-            textview_details.text = details
+        val details = task.details.toString()
+        if(task.details!=null){
+            val detailsLines = details.split("\n")
+            if(detailsLines.size<=2){
+                textview_details.text = details
+            }else{
+                textview_details.text = "${detailsLines[0]}\n${detailsLines[1]}..."
+            }
             textview_details.visibility = View.VISIBLE
         }else{
             textview_details.text = ""

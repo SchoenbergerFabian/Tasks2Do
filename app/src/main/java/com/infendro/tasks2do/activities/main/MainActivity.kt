@@ -27,25 +27,8 @@ class MainActivity : AppCompatActivity() {
     //TODO refer to homework
 
     companion object{
-        lateinit var adapter_unchecked : Adapter_UncheckedTasks
-        lateinit var adapter_checked : Adapter_CheckedTasks
-
-        private lateinit var dropdown_showChecked : LinearLayout
-        private lateinit var recyclerview_checkedTasks : RecyclerView
-        fun showEmpty(list: List){
-            if(list.checkedTasks.isEmpty()){
-                dropdown_showChecked.visibility = View.GONE
-                dropdown_showChecked.findViewById<ImageView>(R.id.imageview_ic_dropdown).rotation=0f
-                recyclerview_checkedTasks.visibility=View.GONE
-                recyclerview_checkedTasks.alpha=0f
-            }else{
-                dropdown_showChecked.visibility = View.VISIBLE
-            }
-        }
+        val lists = Lists() //TODO load
     }
-
-    val lists = Lists() //TODO load
-    lateinit var list : List
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,73 +37,57 @@ class MainActivity : AppCompatActivity() {
         toolbar.title = ""
         setSupportActionBar(toolbar)
 
+
         //TODO remove later
-        list = List()
+        val list = List()
 
         list.title = "TEST"
 
-        TEST_addTask()
-        TEST_addTask_withDetails()
-        TEST_addTask_withDetails_withDueDateTime()
-        TEST_addTask_withDueDate()
-        TEST_addTask_withDueDateTime()
-        TEST_addTask_checked()
-        TEST_addTask_checked()
+        TEST_addTask(list)
+        TEST_addTask(list)
+        TEST_addTask_withDetails(list)
+        TEST_addTask_withDetails(list)
+        TEST_addTask_withDetails_withDueDateTime(list)
+        TEST_addTask_withDetails_withDueDateTime(list)
+        TEST_addTask_withDueDate(list)
+        TEST_addTask_withDueDate(list)
+        TEST_addTask_withDueDateTime(list)
+        TEST_addTask_withDueDateTime(list)
+        TEST_addTask_checked(list)
+        TEST_addTask_checked(list)
+        TEST_addTask_checked(list)
+        TEST_addTask_checked(list)
+        TEST_addTask_checked(list)
+        TEST_addTask_checked(list)
+        TEST_addTask_checked(list)
+        TEST_addTask_checked(list)
 
-        Companion.dropdown_showChecked = dropdown_showChecked
-        Companion.recyclerview_checkedTasks = recyclerview_checkedTasks
+        lists.addList(list)
 
-        dropdown_showChecked.setOnClickListener {
-            if(recyclerview_checkedTasks.visibility==View.GONE){
-                recyclerview_checkedTasks.visibility = View.VISIBLE
-                recyclerview_checkedTasks.animate().setDuration(100).alpha(1f).setListener(null)
-                imageview_ic_dropdown.animate().rotation(180f)
-            }else{
-                recyclerview_checkedTasks.animate().setDuration(100).alpha(0f).setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator) {
-                        recyclerview_checkedTasks.visibility = View.GONE
-                    }
-                })
-                imageview_ic_dropdown.animate().rotation(0f)
-            }
-        }
 
-        updateUI()
     }
 
-    fun updateUI(){
-        textview_title.text = list.title
-
-        adapter_unchecked = Adapter_UncheckedTasks(this, list)
-        recyclerview_tasks.adapter = adapter_unchecked
-
-        adapter_checked = Adapter_CheckedTasks(this, list)
-        recyclerview_checkedTasks.adapter = adapter_checked
-
-        showEmpty(list)
-    }
-
-    fun TEST_addTask(){
+    fun TEST_addTask(list: List){
         val task = Task()
         task.title = "TEST"
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_withDetails(){
+    fun TEST_addTask_withDetails(list: List){
         val task = Task()
         task.title = "TEST details"
         task.details = "details"
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_withDueDate(){
+    fun TEST_addTask_withDueDate(list: List){
         val task = Task()
         task.title = "TEST date"
         task.due_date = LocalDate.now()
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_withDueDateTime(){
+    fun TEST_addTask_withDueDateTime(list: List){
         val task = Task()
         task.title = "TEST datetime"
         task.due_date = LocalDate.now()
@@ -128,7 +95,7 @@ class MainActivity : AppCompatActivity() {
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_withDetails_withDueDateTime(){
+    fun TEST_addTask_withDetails_withDueDateTime(list: List){
         val task = Task()
         task.title = "TEST details datetime"
         task.details = "details"
@@ -137,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_checked(){
+    fun TEST_addTask_checked(list: List){
         val task = Task()
         task.title = "TEST checked"
         list.uncheckedTasks.add(task)

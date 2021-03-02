@@ -5,4 +5,5 @@
     <color name="colorAccent">#3C73FF</color>
     <color name="due">#8C9BFF</color>
     <color name="due_late">#FF7575</color>
+    <color name="save_invalid">#737373</color>
 </resources>
