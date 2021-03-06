@@ -3,7 +3,9 @@
     <color name="colorPrimary">#232323</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
     <color name="colorAccent">#3C73FF</color>
+    <color name="colorControlNormal">#AAAAAA</color>
     <color name="due">#8C9BFF</color>
     <color name="due_late">#FF7575</color>
     <color name="save_invalid">#737373</color>
+    <color name="details">#919191</color>
 </resources>

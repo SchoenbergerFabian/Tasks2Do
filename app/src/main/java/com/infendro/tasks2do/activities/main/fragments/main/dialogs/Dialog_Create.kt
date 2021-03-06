@@ -13,7 +13,6 @@ import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.activities.main.fragments.main.Fragment_Main
 import kotlinx.android.synthetic.main.dialog_create.*
-import kotlinx.android.synthetic.main.fragment_main.*
 import java.time.LocalDate
 
 
@@ -35,10 +34,8 @@ class Dialog_Create(val activity: Activity, val list: List) : Dialog(activity,R.
                 button_save.setTextColor(activity.getColor(R.color.colorAccent))
                 button_save.setOnClickListener {
                     list.uncheckedTasks.add(0, task)
-                    Fragment_Main.adapter_unchecked.notifyItemInserted(0)
-                    Fragment_Main.scrollview.post {
-                        Fragment_Main.scrollview.fullScroll(View.FOCUS_UP)
-                    }
+                    Fragment_Main.adapter.notifyItemInserted(Fragment_Main.adapter.getAdapterPositionOfUncheckedIndex0())
+                    Fragment_Main.recyclerview.scrollToPosition(0)
                     dismiss()
                 }
             }

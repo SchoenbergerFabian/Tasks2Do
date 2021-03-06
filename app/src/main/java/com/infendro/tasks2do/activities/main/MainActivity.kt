@@ -13,101 +13,95 @@ import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Lists
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import java.time.LocalDate
 import java.time.LocalTime
 
 
 class MainActivity : AppCompatActivity() {
 
-    //TODO display empty string resource when todo list is empty
-    //TODO support multiple Todo lists (fragments)
-    //TODO add new Todo (Dialog/Fragment)
-    //TODO refer to homework
+    //TODO multiple Todo lists (drawer from below)
+    //TODO add time when creating Todo
+    //TODO settings fragment with preferences
+    //TODO save on sd card or internal storage (gson)
+    //TODO program personal serialisation format
 
     companion object{
         val lists = Lists() //TODO load
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        toolbar.title = ""
-        setSupportActionBar(toolbar)
-
-
         //TODO remove later
         val list = List()
 
         list.title = "TEST"
 
-        TEST_addTask(list)
-        TEST_addTask(list)
-        TEST_addTask_withDetails(list)
-        TEST_addTask_withDetails(list)
-        TEST_addTask_withDetails_withDueDateTime(list)
-        TEST_addTask_withDetails_withDueDateTime(list)
-        TEST_addTask_withDueDate(list)
-        TEST_addTask_withDueDate(list)
-        TEST_addTask_withDueDateTime(list)
-        TEST_addTask_withDueDateTime(list)
-        TEST_addTask_checked(list)
-        TEST_addTask_checked(list)
-        TEST_addTask_checked(list)
-        TEST_addTask_checked(list)
-        TEST_addTask_checked(list)
-        TEST_addTask_checked(list)
-        TEST_addTask_checked(list)
-        TEST_addTask_checked(list)
+        TEST_addTask("TEST1",list)
+        TEST_addTask("TEST2",list)
+        TEST_addTask_withDetails("TEST3",list)
+        TEST_addTask_withDetails("TEST4",list)
+        TEST_addTask_withDetails_withDueDateTime("TEST5",list)
+        TEST_addTask_withDetails_withDueDateTime("TEST6",list)
+        TEST_addTask_withDueDate("TEST7",list)
+        TEST_addTask_withDueDate("TEST8",list)
+        TEST_addTask_withDueDateTime("TEST9",list)
+        TEST_addTask_withDueDateTime("TEST10",list)
+        TEST_addTask_checked("TEST11",list)
+        TEST_addTask_checked("TEST12",list)
+        TEST_addTask_checked("TEST13",list)
+        TEST_addTask_checked("TEST14",list)
+        TEST_addTask_checked("TEST15",list)
+        TEST_addTask_checked("TEST16",list)
+        TEST_addTask_checked("TEST17",list)
+        TEST_addTask_checked("TEST18",list)
 
         lists.addList(list)
 
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
     }
 
-    fun TEST_addTask(list: List){
+    fun TEST_addTask(title: String,list: List){
         val task = Task()
-        task.title = "TEST"
+        task.title = "$title"
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_withDetails(list: List){
+    fun TEST_addTask_withDetails(title: String,list: List){
         val task = Task()
-        task.title = "TEST details"
+        task.title = "$title details"
         task.details = "details"
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_withDueDate(list: List){
+    fun TEST_addTask_withDueDate(title: String,list: List){
         val task = Task()
-        task.title = "TEST date"
+        task.title = "$title date"
         task.due_date = LocalDate.now()
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_withDueDateTime(list: List){
+    fun TEST_addTask_withDueDateTime(title: String,list: List){
         val task = Task()
-        task.title = "TEST datetime"
+        task.title = "$title datetime"
         task.due_date = LocalDate.now()
         task.due_time = LocalTime.now()
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_withDetails_withDueDateTime(list: List){
+    fun TEST_addTask_withDetails_withDueDateTime(title: String,list: List){
         val task = Task()
-        task.title = "TEST details datetime"
+        task.title = "$title details datetime"
         task.details = "details"
         task.due_date = LocalDate.now()
         task.due_time = LocalTime.now()
         list.uncheckedTasks.add(task)
     }
 
-    fun TEST_addTask_checked(list: List){
+    fun TEST_addTask_checked(title: String,list: List){
         val task = Task()
-        task.title = "TEST checked"
-        list.uncheckedTasks.add(task)
-        list.check(list.uncheckedTasks.size - 1)
+        task.title = "$title checked"
+        task.checked=true
+        list.checkedTasks.add(task)
     }
 }
