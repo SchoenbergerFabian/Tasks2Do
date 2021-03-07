@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.activities.main.fragments.main.adapters.Adapter
+import com.infendro.tasks2do.activities.main.fragments.main.adapters.AdapterList
 import com.infendro.tasks2do.activities.main.MainActivity
 import com.infendro.tasks2do.activities.main.fragments.main.dialogs.Dialog_Create
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class Fragment_Main : Fragment() {
 
     companion object{
-        lateinit var adapter : Adapter
+        lateinit var adapter : AdapterList
         lateinit var recyclerview : RecyclerView
     }
 
@@ -49,7 +49,7 @@ class Fragment_Main : Fragment() {
 
         if(list!=null){
 
-            adapter = Adapter(
+            adapter = AdapterList(
                     requireActivity(),
                     list)
             recyclerview.adapter = adapter

@@ -13,12 +13,12 @@ import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.activities.main.fragments.main.Fragment_Main
 
-class Adapter(private val activity: Activity, private val list: List) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AdapterList(private val activity: Activity, private val list: List) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object{
         private var checkedTasksShown = false
         private var checkedTasks = false
-        private lateinit var adapter : Adapter
+        private lateinit var adapter : AdapterList
     }
 
     init {
