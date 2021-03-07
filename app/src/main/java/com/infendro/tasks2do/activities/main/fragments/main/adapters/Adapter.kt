@@ -5,11 +5,8 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.List
@@ -75,28 +72,28 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if(isHeader(position)){
+    override fun getItemViewType(adapterPosition: Int): Int {
+        return if(isHeader(adapterPosition)){
             HEADER
-        }else if(isDropdown(position)){
+        }else if(isDropdown(adapterPosition)){
             DROPDOWN
-        }else if(isSpace(position)){
+        }else if(isSpace(adapterPosition)){
             SPACE
         }else{
             0
         }
     }
 
-    fun isHeader(position: Int) : Boolean {
-        return position==getHeaderIndex()
+    fun isHeader(adapterPosition: Int) : Boolean {
+        return adapterPosition==getHeaderIndex()
     }
 
     fun getHeaderIndex() : Int{
         return 0
     }
 
-    fun isDropdown(position: Int) : Boolean {
-        return position==getDropdownIndex()
+    fun isDropdown(adapterPosition: Int) : Boolean {
+        return adapterPosition==getDropdownIndex()
     }
 
     fun getDropdownIndex() : Int{
@@ -106,8 +103,8 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
         }
     }
 
-    fun isSpace(position: Int) : Boolean {
-        return position == getSpaceIndex()
+    fun isSpace(adapterPosition: Int) : Boolean {
+        return adapterPosition == getSpaceIndex()
     }
 
     fun getSpaceIndex() : Int{
@@ -134,16 +131,12 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
         return true
     }
 
-    fun getUncheckedIndex(position: Int) : Int{
-        return position - 1
+    fun getUncheckedIndex(adapterPosition: Int) : Int{
+        return adapterPosition - 1
     }
 
     fun getCheckedIndex(adapterPosition: Int) : Int{
         return adapterPosition - list.uncheckedTasks.size - 2
-    }
-
-    fun getAdapterPositionOfUncheckedIndex0() : Int {
-        return 1
     }
 
     fun getAdapterPositionOfCheckedIndex0() : Int {
