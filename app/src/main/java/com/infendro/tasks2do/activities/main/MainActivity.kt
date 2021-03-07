@@ -19,11 +19,15 @@ import java.time.LocalTime
 
 class MainActivity : AppCompatActivity() {
 
-    //TODO multiple Todo lists (drawer from below)
-    //TODO add time when creating Todo
+    //TODO edit tasks
     //TODO settings fragment with preferences
     //TODO save on sd card or internal storage (gson)
+    //TODO add time when creating Todo
+
     //TODO program personal serialisation format
+
+    //TODO better edittext style
+    //TODO multiple Todo lists (drawer from below)
 
     companion object{
         val lists = Lists() //TODO load

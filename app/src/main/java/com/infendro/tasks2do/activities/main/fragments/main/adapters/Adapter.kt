@@ -7,6 +7,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
@@ -150,20 +152,20 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
 
     class ViewHolder_Task(private val activity: Activity, view: View, val list: List) : RecyclerView.ViewHolder(view) {
 
+        val layout: LinearLayout = view.findViewById(R.id.layout)
+
         private val button_check: ImageView = view.findViewById(R.id.button_check)
 
         private val textview_title: TextView = view.findViewById(R.id.textview_title)
         private val textview_details: TextView = view.findViewById(R.id.textview_details)
         private val textview_due: TextView = view.findViewById(R.id.textview_due)
 
-        private lateinit var task: Task
-
         fun bind(task : Task){
-            bindButton()
+            bindLayout(task)
 
-            this.task=task
+            bindButton(task)
 
-            setCheckedImage()
+            setCheckedImage(task)
 
             textview_title.text = task.title
 
@@ -196,7 +198,14 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
             }
         }
 
-        private fun bindButton(){
+        private fun bindLayout(task: Task){
+            layout.setOnClickListener {
+                val bundle = bundleOf("LIST" to list,"TASK" to task, "INDEX" to when(task.checked){true -> adapter.getCheckedIndex(adapterPosition) false -> adapter.getUncheckedIndex(adapterPosition)})
+                activity.findNavController(R.id.nav).navigate(R.id.action_fragment_Main_to_fragmentDetail, bundle)
+            }
+        }
+
+        private fun bindButton(task: Task){
             button_check.setOnClickListener {
                 button_check.setOnClickListener(null)
                 when(task.checked){
@@ -204,9 +213,10 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
                         list.uncheck(adapter.getCheckedIndex(adapterPosition))
 
                         //update image
-                        setCheckedImage()
+                        setCheckedImage(task)
 
                         adapter.notifyItemMoved(adapterPosition,1)
+                        bindButton(task)
 
                         if(list.checkedTasks.isEmpty()){
                             adapter.notifyItemRemoved(adapter.itemCount-2)
@@ -214,7 +224,6 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
                             checkedTasksShown = false
                         }
 
-                        bindButton()
 
                     }
                     false -> {
@@ -222,7 +231,7 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
                         checkedTasks=true
 
                         //update image
-                        setCheckedImage()
+                        setCheckedImage(task)
 
                         if(checkedTasksShown){
                             adapter.notifyItemRemoved(adapterPosition)
@@ -236,7 +245,7 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
             }
         }
 
-        private fun setCheckedImage(){
+        private fun setCheckedImage(task: Task){
             when(task.checked){
                 true -> button_check.setImageResource(R.drawable.ic_checked)
                 false -> button_check.setImageResource(R.drawable.ic_unchecked)
@@ -246,15 +255,19 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
     }
 
     class ViewHolder_Header(view: View) : RecyclerView.ViewHolder(view) {
+
         private val textview_title: TextView = view.findViewById(R.id.textview_title)
+
         fun bind(title: String) {
             textview_title.text=title
         }
     }
 
     class ViewHolder_Dropdown(view: View, val list: List) : RecyclerView.ViewHolder(view) {
+
         private val layout = view.findViewById<LinearLayout>(R.id.layout)
         private val imageview_expand = view.findViewById<ImageView>(R.id.imageview_expand)
+
         fun bind() {
             layout.setOnClickListener {
                 when(checkedTasksShown){
@@ -269,14 +282,14 @@ class Adapter(private val activity: Activity, private val list: List) : Recycler
                         }
 
                         //rotate expand icon 180°
-                        imageview_expand.animate().setDuration(100).rotation(180f)
+                        imageview_expand.animate().setDuration(200).rotation(180f)
                     }
                     true -> {
                         checkedTasksShown=false
                         adapter.notifyItemRangeRemoved(adapterPosition+1,list.checkedTasks.size)
 
                         //rotate expand icon back
-                        imageview_expand.animate().setDuration(100).rotation(0f)
+                        imageview_expand.animate().setDuration(200).rotation(0f)
                     }
                 }
             }

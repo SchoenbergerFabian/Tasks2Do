@@ -1,6 +1,8 @@
 package com.infendro.tasks2do
 
-class List(var title: String, val uncheckedTasks: ArrayList<Task>, val checkedTasks: ArrayList<Task>) {
+import java.io.Serializable
+
+class List(var title: String, val uncheckedTasks: ArrayList<Task>, val checkedTasks: ArrayList<Task>) : Serializable {
     constructor() : this("",ArrayList<Task>(),ArrayList<Task>())
 
     fun check(position: Int){

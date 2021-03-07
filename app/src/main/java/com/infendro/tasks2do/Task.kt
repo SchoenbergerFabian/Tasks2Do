@@ -1,10 +1,11 @@
 package com.infendro.tasks2do
 
+import java.io.Serializable
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class Task(var title: String, var details: String?, var due_date: LocalDate?, var due_time: LocalTime?, var checked: Boolean) {
+class Task(var title: String, var details: String?, var due_date: LocalDate?, var due_time: LocalTime?, var checked: Boolean) : Serializable {
     constructor() : this("", null, null, null, false)
 
     fun getDueString(pattern_date: String, pattern_time: String) : String? {

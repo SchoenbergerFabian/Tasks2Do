@@ -9,4 +9,6 @@
     <string name="save">Save</string>
     <string name="new_task">New Task</string>
     <string name="add_details">Add Details</string>
+    <string name="add_datetime">Add date/time</string>
+    <string name="enter_title">Enter Title</string>
 </resources>

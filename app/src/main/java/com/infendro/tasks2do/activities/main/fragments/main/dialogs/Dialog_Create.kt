@@ -28,7 +28,7 @@ class Dialog_Create(val activity: Activity, val list: List) : Dialog(activity,R.
 
         edittext_title.doOnTextChanged { text, _, _, count ->
             if(count==0){
-                button_save.setTextColor(activity.getColor(R.color.save_invalid))
+                button_save.setTextColor(activity.getColor(R.color.invalid))
                 button_save.setOnClickListener(null)
             }else{
                 button_save.setTextColor(activity.getColor(R.color.colorAccent))
