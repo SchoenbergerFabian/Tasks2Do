@@ -1,4 +1,4 @@
-package com.infendro.tasks2do.activities.main.fragments.main.adapters
+package com.infendro.tasks2do.activities.ui.fragments.main.adapters
 
 import android.app.Activity
 import android.view.*
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Task
-import com.infendro.tasks2do.activities.main.fragments.main.Fragment_Main
+import com.infendro.tasks2do.activities.ui.fragments.main.FragmentMain
 
 class AdapterList(private val activity: Activity, private val list: List) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -26,18 +26,18 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
         checkedTasks=list.checkedTasks.isNotEmpty()
     }
 
-    val HEADER = 1
-    val DROPDOWN = 2
-    val SPACE = 3
+    private val HEADER = 1
+    private val DROPDOWN = 2
+    private val SPACE = 3
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when(viewType){
-            HEADER -> ViewHolder_Header(LayoutInflater.from(viewGroup.context)
+            HEADER -> ViewHolderHeader(LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.view_header, viewGroup, false))
-            DROPDOWN -> ViewHolder_Dropdown(LayoutInflater.from(viewGroup.context)
+            DROPDOWN -> ViewHolderDropdown(LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.view_dropdown, viewGroup, false),
             list)
-            SPACE -> ViewHolder_Space(LayoutInflater.from(viewGroup.context)
+            SPACE -> ViewHolderSpace(LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.view_space, viewGroup, false))
             else -> ViewHolder_Task(
                 activity,
@@ -51,11 +51,11 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        if(viewHolder is ViewHolder_Header){
+        if(viewHolder is ViewHolderHeader){
             viewHolder.bind(list.title)
-        }else if(viewHolder is ViewHolder_Dropdown){
+        }else if(viewHolder is ViewHolderDropdown){
             viewHolder.bind()
-        }else if(viewHolder is ViewHolder_Space){
+        }else if(viewHolder is ViewHolderSpace){
             //do nothing
         }else{
             (viewHolder as ViewHolder_Task).bind(getItem(position))
@@ -73,41 +73,46 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
     }
 
     override fun getItemViewType(adapterPosition: Int): Int {
-        return if(isHeader(adapterPosition)){
-            HEADER
-        }else if(isDropdown(adapterPosition)){
-            DROPDOWN
-        }else if(isSpace(adapterPosition)){
-            SPACE
-        }else{
-            0
+        return when {
+            isHeader(adapterPosition) -> {
+                HEADER
+            }
+            isDropdown(adapterPosition) -> {
+                DROPDOWN
+            }
+            isSpace(adapterPosition) -> {
+                SPACE
+            }
+            else -> {
+                0
+            }
         }
     }
 
-    fun isHeader(adapterPosition: Int) : Boolean {
+    private fun isHeader(adapterPosition: Int) : Boolean {
         return adapterPosition==getHeaderIndex()
     }
 
-    fun getHeaderIndex() : Int{
+    private fun getHeaderIndex() : Int{
         return 0
     }
 
-    fun isDropdown(adapterPosition: Int) : Boolean {
+    private fun isDropdown(adapterPosition: Int) : Boolean {
         return adapterPosition==getDropdownIndex()
     }
 
-    fun getDropdownIndex() : Int{
+    private fun getDropdownIndex() : Int{
         return when(checkedTasks){
             true -> list.uncheckedTasks.size+1
             false -> -1
         }
     }
 
-    fun isSpace(adapterPosition: Int) : Boolean {
+    private fun isSpace(adapterPosition: Int) : Boolean {
         return adapterPosition == getSpaceIndex()
     }
 
-    fun getSpaceIndex() : Int{
+    private fun getSpaceIndex() : Int{
         return list.uncheckedTasks.size + when(checkedTasks){
             true -> 2 + when(checkedTasksShown){
                 true -> list.checkedTasks.size
@@ -117,14 +122,14 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
         }
     }
 
-    fun getItem(adapterPosition: Int) : Task {
+    private fun getItem(adapterPosition: Int) : Task {
         if(isChecked(adapterPosition)){
             return list.checkedTasks[getCheckedIndex(adapterPosition)]
         }
         return list.uncheckedTasks[getUncheckedIndex(adapterPosition)]
     }
 
-    fun isChecked(adapterPosition: Int) : Boolean{
+    private fun isChecked(adapterPosition: Int) : Boolean{
         if(adapterPosition-1<list.uncheckedTasks.size){
             return false
         }
@@ -139,19 +144,23 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
         return adapterPosition - list.uncheckedTasks.size - 2
     }
 
+    fun getAdapterPositionOfUncheckedIndex0() : Int {
+        return 1
+    }
+
     fun getAdapterPositionOfCheckedIndex0() : Int {
         return list.uncheckedTasks.size+2
     }
 
     class ViewHolder_Task(private val activity: Activity, view: View, val list: List) : RecyclerView.ViewHolder(view) {
 
-        val layout: LinearLayout = view.findViewById(R.id.layout)
+        private val layout: LinearLayout = view.findViewById(R.id.layout)
 
-        private val button_check: ImageView = view.findViewById(R.id.button_check)
+        private val buttonCheck: ImageView = view.findViewById(R.id.buttonCheck)
 
-        private val textview_title: TextView = view.findViewById(R.id.textview_title)
-        private val textview_details: TextView = view.findViewById(R.id.textview_details)
-        private val textview_due: TextView = view.findViewById(R.id.textview_due)
+        private val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
+        private val textViewDetails: TextView = view.findViewById(R.id.textViewDetails)
+        private val textViewDue: TextView = view.findViewById(R.id.textViewDue)
 
         fun bind(task : Task){
             bindLayout(task)
@@ -160,34 +169,34 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
 
             setCheckedImage(task)
 
-            textview_title.text = task.title
+            textViewTitle.text = task.title
 
             val details = task.details.toString()
             if(task.details!=null){
                 val detailsLines = details.split("\n")
                 if(detailsLines.size<=2){
-                    textview_details.text = details
+                    textViewDetails.text = details
                 }else{
-                    textview_details.text = "${detailsLines[0]}\n${detailsLines[1]}..."
+                    textViewDetails.text = "${detailsLines[0]}\n${detailsLines[1]}..."
                 }
-                textview_details.visibility = View.VISIBLE
+                textViewDetails.visibility = View.VISIBLE
             }else{
-                textview_details.text = ""
-                textview_details.visibility = View.GONE
+                textViewDetails.text = ""
+                textViewDetails.visibility = View.GONE
             }
 
             val due = task.getDueString(activity.getString(R.string.pattern_date),activity.getString(R.string.pattern_time))
             if(due!=null&&!task.checked){
-                textview_due.text = due
-                textview_due.visibility = View.VISIBLE
+                textViewDue.text = due
+                textViewDue.visibility = View.VISIBLE
                 if(task.isOver()){
-                    textview_due.setTextColor(activity.getColor(R.color.due_late))
+                    textViewDue.setTextColor(activity.getColor(R.color.due_late))
                 }else{
-                    textview_due.setTextColor(activity.getColor(R.color.due))
+                    textViewDue.setTextColor(activity.getColor(R.color.due))
                 }
             }else{
-                textview_due.text = ""
-                textview_due.visibility = View.GONE
+                textViewDue.text = ""
+                textViewDue.visibility = View.GONE
             }
         }
 
@@ -199,8 +208,8 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
         }
 
         private fun bindButton(task: Task){
-            button_check.setOnClickListener {
-                button_check.setOnClickListener(null)
+            buttonCheck.setOnClickListener {
+                buttonCheck.setOnClickListener(null)
                 when(task.checked){
                     true -> {
                         list.uncheck(adapter.getCheckedIndex(adapterPosition))
@@ -240,26 +249,26 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
 
         private fun setCheckedImage(task: Task){
             when(task.checked){
-                true -> button_check.setImageResource(R.drawable.ic_checked)
-                false -> button_check.setImageResource(R.drawable.ic_unchecked)
+                true -> buttonCheck.setImageResource(R.drawable.ic_checked)
+                false -> buttonCheck.setImageResource(R.drawable.ic_unchecked)
             }
         }
 
     }
 
-    class ViewHolder_Header(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolderHeader(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val textview_title: TextView = view.findViewById(R.id.textview_title)
+        private val textview_title: TextView = view.findViewById(R.id.textViewTitle)
 
         fun bind(title: String) {
             textview_title.text=title
         }
     }
 
-    class ViewHolder_Dropdown(view: View, val list: List) : RecyclerView.ViewHolder(view) {
+    class ViewHolderDropdown(view: View, val list: List) : RecyclerView.ViewHolder(view) {
 
         private val layout = view.findViewById<LinearLayout>(R.id.layout)
-        private val imageview_expand = view.findViewById<ImageView>(R.id.imageview_expand)
+        private val imageViewExpand = view.findViewById<ImageView>(R.id.imageview_expand)
 
         fun bind() {
             layout.setOnClickListener {
@@ -269,26 +278,26 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                         adapter.notifyItemRangeInserted(adapterPosition+1,list.checkedTasks.size)
 
                         if(list.checkedTasks.size>5){
-                            Fragment_Main.recyclerview.scrollToPosition(adapterPosition+6)
+                            FragmentMain.recyclerview.scrollToPosition(adapterPosition+6)
                         }else{
-                            Fragment_Main.recyclerview.scrollToPosition(adapterPosition+list.checkedTasks.size+1)
+                            FragmentMain.recyclerview.scrollToPosition(adapterPosition+list.checkedTasks.size+1)
                         }
 
                         //rotate expand icon 180°
-                        imageview_expand.animate().setDuration(200).rotation(180f)
+                        imageViewExpand.animate().setDuration(200).rotation(180f)
                     }
                     true -> {
                         checkedTasksShown=false
                         adapter.notifyItemRangeRemoved(adapterPosition+1,list.checkedTasks.size)
 
                         //rotate expand icon back
-                        imageview_expand.animate().setDuration(200).rotation(0f)
+                        imageViewExpand.animate().setDuration(200).rotation(0f)
                     }
                 }
             }
         }
     }
 
-    class ViewHolder_Space(view: View) : RecyclerView.ViewHolder(view) {}
+    class ViewHolderSpace(view: View) : RecyclerView.ViewHolder(view) {}
 
 }

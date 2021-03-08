@@ -1,4 +1,4 @@
-package com.infendro.tasks2do.activities.main.fragments.main
+package com.infendro.tasks2do.activities.ui.fragments.main
 
 import android.os.Bundle
 import android.view.*
@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.activities.main.fragments.main.adapters.AdapterList
-import com.infendro.tasks2do.activities.main.MainActivity
-import com.infendro.tasks2do.activities.main.fragments.main.dialogs.Dialog_Create
+import com.infendro.tasks2do.activities.ui.fragments.main.adapters.AdapterList
+import com.infendro.tasks2do.activities.ui.MainActivity
+import com.infendro.tasks2do.activities.ui.fragments.main.dialogs.DialogCreate
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class Fragment_Main : Fragment() {
+class FragmentMain : Fragment() {
 
     companion object{
         lateinit var adapter : AdapterList
@@ -33,7 +33,7 @@ class Fragment_Main : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Companion.recyclerview=recyclerview
+        Companion.recyclerview=recyclerView
 
         //toolbar
         (activity as AppCompatActivity).setSupportActionBar(bottomAppBar)
@@ -52,17 +52,17 @@ class Fragment_Main : Fragment() {
             adapter = AdapterList(
                     requireActivity(),
                     list)
-            recyclerview.adapter = adapter
+            recyclerView.adapter = adapter
 
-            fab_create.show()
-            fab_create.setOnClickListener {
-                Dialog_Create(requireActivity(),list).show()
+            fabCreate.show()
+            fabCreate.setOnClickListener {
+                DialogCreate(requireActivity(),list).show()
             }
 
         }else{
 
-            recyclerview.adapter=null
-            fab_create.hide()
+            recyclerView.adapter=null
+            fabCreate.hide()
 
         }
     }

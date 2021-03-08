@@ -5,38 +5,34 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class Task(var title: String, var details: String?, var due_date: LocalDate?, var due_time: LocalTime?, var checked: Boolean) : Serializable {
+class Task(var title: String?, var details: String?, var dueDate: LocalDate?, var dueTime: LocalTime?, var checked: Boolean) : Serializable {
     constructor() : this("", null, null, null, false)
 
     fun getDueString(pattern_date: String, pattern_time: String) : String? {
-        if(due_date!=null){
-            if(due_time!=null){
-                return due_date?.atTime(due_time)?.format(DateTimeFormatter.ofPattern("$pattern_date, $pattern_time"))
+        if(dueDate!=null){
+            if(dueTime!=null){
+                return dueDate?.atTime(dueTime)?.format(DateTimeFormatter.ofPattern("$pattern_date, $pattern_time"))
             }else{
-                return due_date?.format(DateTimeFormatter.ofPattern(pattern_date))
+                return dueDate?.format(DateTimeFormatter.ofPattern(pattern_date))
             }
         }else{
             return null
         }
     }
 
-    fun changeChecked(){
-        checked = !checked
-    }
-
     fun isOver() : Boolean {
         val now_date = LocalDate.now()
-        if(due_date!=null){
-            if(now_date.isAfter(due_date)){
+        if(dueDate!=null){
+            if(now_date.isAfter(dueDate)){
                 return true
-            }else if(now_date.isEqual(due_date)){
+            }else if(now_date.isEqual(dueDate)){
                 val now_time = LocalTime.now()
 
-                if(due_time!=null){
-                    if(now_time.hour>due_time!!.hour){
+                if(dueTime!=null){
+                    if(now_time.hour>dueTime!!.hour){
                         return true
-                    }else if(now_time.hour==due_time!!.hour){
-                        if(now_time.minute>due_time!!.minute){
+                    }else if(now_time.hour==dueTime!!.hour){
+                        if(now_time.minute>dueTime!!.minute){
                             return true
                         }
                     }
@@ -55,8 +51,8 @@ class Task(var title: String, var details: String?, var due_date: LocalDate?, va
 
         if (title != other.title) return false
         if (details != other.details) return false
-        if (due_date != other.due_date) return false
-        if (due_time != other.due_time) return false
+        if (dueDate != other.dueDate) return false
+        if (dueTime != other.dueTime) return false
         if (checked != other.checked) return false
 
         return true
@@ -65,8 +61,8 @@ class Task(var title: String, var details: String?, var due_date: LocalDate?, va
     override fun hashCode(): Int {
         var result = title.hashCode()
         result = 31 * result + (details?.hashCode() ?: 0)
-        result = 31 * result + (due_date?.hashCode() ?: 0)
-        result = 31 * result + (due_time?.hashCode() ?: 0)
+        result = 31 * result + (dueDate?.hashCode() ?: 0)
+        result = 31 * result + (dueTime?.hashCode() ?: 0)
         result = 31 * result + checked.hashCode()
         return result
     }

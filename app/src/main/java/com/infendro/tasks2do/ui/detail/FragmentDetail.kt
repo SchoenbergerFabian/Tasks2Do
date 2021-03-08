@@ -1,15 +1,17 @@
-package com.infendro.tasks2do.activities.main.fragments.detail
+package com.infendro.tasks2do.activities.ui.fragments.detail
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import kotlinx.android.synthetic.main.fragment_detail.*
 import com.infendro.tasks2do.List
+import com.infendro.tasks2do.ui.DialogDateTimePicker
 
 class FragmentDetail : Fragment() {
     private var list: List? = null
@@ -37,7 +39,7 @@ class FragmentDetail : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         imageButtonBack.setOnClickListener {
-            findNavController().navigate(R.id.action_fragmentDetail_to_fragment_Main)
+            navigateBack()
         }
 
         imageButtonDelete.setOnClickListener {
@@ -49,19 +51,23 @@ class FragmentDetail : Fragment() {
                     list?.uncheckedTasks?.removeAt(index)
                 }
             }
-            findNavController().navigate(R.id.action_fragmentDetail_to_fragment_Main)
+            navigateBack()
         }
 
         editTextTitle.setText(task?.title)
-        //TODO ontextchanged
+        editTextTitle.doOnTextChanged { text, _, _, _ ->
+            task?.title = text.toString()
+        }
 
         editTextDetails.setText(task?.details)
-        //TODO ontextchanged
+        editTextDetails.doOnTextChanged{ text, _, _, _ ->
+            task?.details = text.toString()
+        }
 
         textViewDue.text = task?.getDueString(requireActivity().getString(R.string.pattern_date),requireActivity().getString(R.string.pattern_time))
-        //TODO datetimepicker onclick in layout
+        DialogDateTimePicker(requireActivity(),task).show()
 
-        //TODO setup imagebuttoncheck icon
+        setCheckedImage()
         imageButtonCheck.setOnClickListener {
             when(task?.checked){
                 true -> {
@@ -71,8 +77,24 @@ class FragmentDetail : Fragment() {
                     list?.check(index)
                 }
             }
-            findNavController().navigate(R.id.action_fragmentDetail_to_fragment_Main)
+            setCheckedImage()
+            navigateBack()
         }
+    }
+
+    fun setCheckedImage(){
+        when(task?.checked){
+            true -> {
+                imageButtonCheck.setImageResource(R.drawable.ic_checked)
+            }
+            false -> {
+                imageButtonCheck.setImageResource(R.drawable.ic_unchecked)
+            }
+        }
+    }
+
+    fun navigateBack(){
+        requireActivity().currentFocus?.clearFocus()
     }
 
 }

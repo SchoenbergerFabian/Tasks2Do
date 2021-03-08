@@ -1,14 +1,7 @@
-package com.infendro.tasks2do.activities.main
+package com.infendro.tasks2do.activities.ui
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.List
@@ -82,15 +75,15 @@ class MainActivity : AppCompatActivity() {
     fun TEST_addTask_withDueDate(title: String,list: List){
         val task = Task()
         task.title = "$title date"
-        task.due_date = LocalDate.now()
+        task.dueDate = LocalDate.now()
         list.uncheckedTasks.add(task)
     }
 
     fun TEST_addTask_withDueDateTime(title: String,list: List){
         val task = Task()
         task.title = "$title datetime"
-        task.due_date = LocalDate.now()
-        task.due_time = LocalTime.now()
+        task.dueDate = LocalDate.now()
+        task.dueTime = LocalTime.now()
         list.uncheckedTasks.add(task)
     }
 
@@ -98,8 +91,8 @@ class MainActivity : AppCompatActivity() {
         val task = Task()
         task.title = "$title details datetime"
         task.details = "details"
-        task.due_date = LocalDate.now()
-        task.due_time = LocalTime.now()
+        task.dueDate = LocalDate.now()
+        task.dueTime = LocalTime.now()
         list.uncheckedTasks.add(task)
     }
 

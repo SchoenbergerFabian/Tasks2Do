@@ -11,7 +11,7 @@
     android:paddingBottom="15dp">
 
     <EditText
-        android:id="@+id/edittext_title"
+        android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="-4dp"
@@ -19,14 +19,15 @@
         android:maxLines="1" />
 
     <EditText
-        android:id="@+id/edittext_details"
+        android:id="@+id/editTextDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="-4dp"
         android:layout_marginTop="-5dp"
         android:hint="@string/add_details"
         android:textSize="16sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:inputType="textMultiLine" />
 
     <LinearLayout
         android:id="@+id/due"
@@ -38,14 +39,14 @@
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/textview_due"
+            android:id="@+id/textViewDue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="XX.XX.XXXX XX:XX"
             android:textSize="16sp" />
 
         <ImageButton
-            android:id="@+id/imagebutton_remove_datetime"
+            android:id="@+id/imageButtonRemoveDatetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -57,10 +58,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imagebutton_add_details"
+            android:id="@+id/imageButtonAddDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -68,7 +70,7 @@
             app:srcCompat="@drawable/ic_add_details" />
 
         <ImageButton
-            android:id="@+id/imagebutton_add_datetime"
+            android:id="@+id/imageButtonAddDatetime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -77,12 +79,12 @@
             app:srcCompat="@drawable/ic_add_datetime" />
 
         <Space
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/button_save"
+            android:id="@+id/buttonSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

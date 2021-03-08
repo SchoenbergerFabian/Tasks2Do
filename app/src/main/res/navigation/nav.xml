@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_Main"
-        android:name="com.infendro.tasks2do.activities.main.fragments.main.Fragment_Main"
+        android:name="com.infendro.tasks2do.activities.ui.fragments.main.FragmentMain"
         android:label="Fragment_Main" >
         <action
             android:id="@+id/action_fragment_Main_to_fragmentDetail"
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentDetail"
-        android:name="com.infendro.tasks2do.activities.main.fragments.detail.FragmentDetail"
+        android:name="com.infendro.tasks2do.activities.ui.fragments.detail.FragmentDetail"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <action

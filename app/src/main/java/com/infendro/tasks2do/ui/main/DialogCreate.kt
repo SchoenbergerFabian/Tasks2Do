@@ -1,4 +1,4 @@
-package com.infendro.tasks2do.activities.main.fragments.main.dialogs
+package com.infendro.tasks2do.activities.ui.fragments.main.dialogs
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -11,12 +11,12 @@ import androidx.core.widget.doOnTextChanged
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
-import com.infendro.tasks2do.activities.main.fragments.main.Fragment_Main
+import com.infendro.tasks2do.activities.ui.fragments.main.FragmentMain
 import kotlinx.android.synthetic.main.dialog_create.*
 import java.time.LocalDate
 
 
-class Dialog_Create(val activity: Activity, val list: List) : Dialog(activity,R.style.Dialog_Create) {
+class DialogCreate(val activity: Activity, val list: List) : Dialog(activity,R.style.Dialog_Create) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_create)
@@ -26,35 +26,35 @@ class Dialog_Create(val activity: Activity, val list: List) : Dialog(activity,R.
 
         val task = Task()
 
-        edittext_title.doOnTextChanged { text, _, _, count ->
+        editTextTitle.doOnTextChanged { text, _, _, count ->
             if(count==0){
-                button_save.setTextColor(activity.getColor(R.color.invalid))
-                button_save.setOnClickListener(null)
+                buttonSave.setTextColor(activity.getColor(R.color.invalid))
+                buttonSave.setOnClickListener(null)
             }else{
-                button_save.setTextColor(activity.getColor(R.color.colorAccent))
-                button_save.setOnClickListener {
+                buttonSave.setTextColor(activity.getColor(R.color.colorAccent))
+                buttonSave.setOnClickListener {
                     list.uncheckedTasks.add(0, task)
-                    Fragment_Main.adapter.notifyItemInserted(Fragment_Main.adapter.getAdapterPositionOfUncheckedIndex0())
-                    Fragment_Main.recyclerview.scrollToPosition(0)
+                    FragmentMain.adapter.notifyItemInserted(FragmentMain.adapter.getAdapterPositionOfUncheckedIndex0())
+                    FragmentMain.recyclerview.scrollToPosition(0)
                     dismiss()
                 }
             }
             task.title = text.toString()
         }
 
-        edittext_details.doOnTextChanged { text, _, _, _ ->
+        editTextDetails.doOnTextChanged { text, _, _, _ ->
             task.details=text.toString()
         }
 
-        imagebutton_add_details.setOnClickListener {
-            edittext_details.visibility= View.VISIBLE
+        imageButtonAddDetails.setOnClickListener {
+            editTextDetails.visibility= View.VISIBLE
         }
 
-        imagebutton_add_datetime.setOnClickListener {
+        imageButtonAddDatetime.setOnClickListener {
             val now = LocalDate.now()
             val datepicker = DatePickerDialog(activity, DatePickerDialog.OnDateSetListener{ _, year, month, dayOfMonth ->
-                    task.due_date = LocalDate.of(year, month+1, dayOfMonth)
-                    textview_due.text = task.getDueString(activity.getString(R.string.pattern_date),activity.getString(R.string.pattern_time))
+                    task.dueDate = LocalDate.of(year, month+1, dayOfMonth)
+                    textViewDue.text = task.getDueString(activity.getString(R.string.pattern_date),activity.getString(R.string.pattern_time))
                     due.visibility=View.VISIBLE
                 },
                 now.year,
@@ -65,10 +65,10 @@ class Dialog_Create(val activity: Activity, val list: List) : Dialog(activity,R.
             datepicker.show()
         }
 
-        imagebutton_remove_datetime.setOnClickListener {
+        imageButtonRemoveDatetime.setOnClickListener {
             due.visibility=View.GONE
-            task.due_date=null
-            task.due_time=null
+            task.dueDate=null
+            task.dueTime=null
         }
 
     }

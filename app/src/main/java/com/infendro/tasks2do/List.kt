@@ -10,9 +10,6 @@ class List(var title: String, val uncheckedTasks: ArrayList<Task>, val checkedTa
         task.checked=true
         checkedTasks.add(0,task)
 
-        println(task.checked)
-        println(task.title)
-        println(task.details)
         println(task.getDueString("dd.MM.yyyy","HH:mm"))
     }
 
@@ -21,9 +18,6 @@ class List(var title: String, val uncheckedTasks: ArrayList<Task>, val checkedTa
         task.checked=false
         uncheckedTasks.add(0,task)
 
-        println(task.checked)
-        println(task.title)
-        println(task.details)
         println(task.getDueString("dd.MM.yyyy","HH:mm"))
     }
 }
