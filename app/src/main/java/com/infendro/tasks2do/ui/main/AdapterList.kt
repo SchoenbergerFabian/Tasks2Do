@@ -39,7 +39,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
             list)
             SPACE -> ViewHolderSpace(LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.view_space, viewGroup, false))
-            else -> ViewHolder_Task(
+            else -> ViewHolderTask(
                 activity,
                 LayoutInflater.from(viewGroup.context)
                     .inflate(R.layout.view_task, viewGroup, false),
@@ -58,7 +58,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
         }else if(viewHolder is ViewHolderSpace){
             //do nothing
         }else{
-            (viewHolder as ViewHolder_Task).bind(getItem(position))
+            (viewHolder as ViewHolderTask).bind(getItem(position))
         }
     }
 
@@ -152,9 +152,9 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
         return list.uncheckedTasks.size+2
     }
 
-    class ViewHolder_Task(private val activity: Activity, view: View, val list: List) : RecyclerView.ViewHolder(view) {
+    class ViewHolderTask(private val activity: Activity, view: View, val list: List) : RecyclerView.ViewHolder(view) {
 
-        private val layout: LinearLayout = view.findViewById(R.id.layout)
+        private val linearLayout: LinearLayout = view.findViewById(R.id.linearLayout)
 
         private val buttonCheck: ImageView = view.findViewById(R.id.buttonCheck)
 
@@ -201,7 +201,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
         }
 
         private fun bindLayout(task: Task){
-            layout.setOnClickListener {
+            linearLayout.setOnClickListener {
                 val bundle = bundleOf("LIST" to list,"TASK" to task, "INDEX" to when(task.checked){true -> adapter.getCheckedIndex(adapterPosition) false -> adapter.getUncheckedIndex(adapterPosition)})
                 activity.findNavController(R.id.nav).navigate(R.id.action_fragment_Main_to_fragmentDetail, bundle)
             }
@@ -267,11 +267,11 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
 
     class ViewHolderDropdown(view: View, val list: List) : RecyclerView.ViewHolder(view) {
 
-        private val layout = view.findViewById<LinearLayout>(R.id.layout)
+        private val linearLayout = view.findViewById<LinearLayout>(R.id.linearLayout)
         private val imageViewExpand = view.findViewById<ImageView>(R.id.imageview_expand)
 
         fun bind() {
-            layout.setOnClickListener {
+            linearLayout.setOnClickListener {
                 when(checkedTasksShown){
                     false -> {
                         checkedTasksShown=true

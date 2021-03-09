@@ -5,62 +5,127 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <CalendarView
-        android:id="@+id/datePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <LinearLayout
-        android:id="@+id/dueTime"
+        android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView"
+        <DatePicker
+            android:id="@+id/datePicker"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_add_time" />
+            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/textViewTime"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/dueTime"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:hint="@string/add_time"
-            android:textSize="18sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_add_time" />
+
+            <TextView
+                android:id="@+id/textViewDueTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:hint="@string/add_time"
+                android:minWidth="0dp"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/imageButtonRemove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@android:color/transparent"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_remove" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/buttonCancelDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="@string/cancel"
+                android:textColor="@color/text" />
+
+            <Button
+                android:id="@+id/buttonDoneDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="@string/done"
+                android:textColor="@color/colorAccent" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="right"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <Button
-            android:id="@+id/buttonCancel"
+        <TimePicker
+            android:id="@+id/timePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:text="@string/cancel"
-            android:textColor="@color/text" />
+            android:timePickerMode="clock"/>
 
-        <Button
-            android:id="@+id/buttonDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:text="@string/done" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/buttonCancelTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="@string/cancel"
+                android:textColor="@color/text" />
+
+            <Button
+                android:id="@+id/buttonDoneTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="@string/done"
+                android:textColor="@color/colorAccent" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

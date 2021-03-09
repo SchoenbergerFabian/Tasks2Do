@@ -64,8 +64,23 @@ class FragmentDetail : Fragment() {
             task?.details = text.toString()
         }
 
-        textViewDue.text = task?.getDueString(requireActivity().getString(R.string.pattern_date),requireActivity().getString(R.string.pattern_time))
-        DialogDateTimePicker(requireActivity(),task).show()
+        val dueString = task?.getDueString(requireActivity().getString(R.string.pattern_date),requireActivity().getString(R.string.pattern_time))
+        if(dueString!=null){
+            textViewDue.hint = ""
+            textViewDue.text = dueString
+            imageButtonRemove.visibility=View.VISIBLE
+        }
+        due.setOnClickListener {
+            DialogDateTimePicker(requireActivity(),task,textViewDue,imageButtonRemove).show()
+        }
+
+        imageButtonRemove.setOnClickListener {
+            textViewDue.hint = activity?.getString(R.string.add_datetime)
+            textViewDue.text = ""
+            imageButtonRemove.visibility=View.GONE
+            task?.dueTime=null
+            task?.dueDate=null
+        }
 
         setCheckedImage()
         imageButtonCheck.setOnClickListener {
@@ -82,7 +97,7 @@ class FragmentDetail : Fragment() {
         }
     }
 
-    fun setCheckedImage(){
+    private fun setCheckedImage(){
         when(task?.checked){
             true -> {
                 imageButtonCheck.setImageResource(R.drawable.ic_checked)
@@ -93,8 +108,9 @@ class FragmentDetail : Fragment() {
         }
     }
 
-    fun navigateBack(){
+    private fun navigateBack(){
         requireActivity().currentFocus?.clearFocus()
+        findNavController().navigate(R.id.action_fragmentDetail_to_fragment_Main)
     }
 
 }

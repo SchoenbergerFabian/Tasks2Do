@@ -6,18 +6,26 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class Task(var title: String?, var details: String?, var dueDate: LocalDate?, var dueTime: LocalTime?, var checked: Boolean) : Serializable {
-    constructor() : this("", null, null, null, false)
+    constructor() : this(null, null, null, null, false)
 
-    fun getDueString(pattern_date: String, pattern_time: String) : String? {
-        if(dueDate!=null){
+    fun getDueString(patternDate: String, patternTime: String) : String? {
+        return if(dueDate!=null){
             if(dueTime!=null){
-                return dueDate?.atTime(dueTime)?.format(DateTimeFormatter.ofPattern("$pattern_date, $pattern_time"))
+                getDueDateString(patternDate)+" "+getDueTimeString(patternTime)
             }else{
-                return dueDate?.format(DateTimeFormatter.ofPattern(pattern_date))
+                getDueDateString(patternDate)
             }
         }else{
-            return null
+            null
         }
+    }
+
+    fun getDueDateString(patternDate : String) : String? {
+        return dueDate?.format(DateTimeFormatter.ofPattern(patternDate))
+    }
+
+    fun getDueTimeString(patternTime: String) : String? {
+        return dueTime?.format(DateTimeFormatter.ofPattern(patternTime))
     }
 
     fun isOver() : Boolean {

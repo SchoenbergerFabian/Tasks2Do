@@ -42,7 +42,6 @@
     </LinearLayout>
 
     <ScrollView
-        android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="10dp"
@@ -87,10 +86,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linearLayoutAddDatetime"
+                android:id="@+id/due"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -101,12 +100,19 @@
 
                 <TextView
                     android:id="@+id/textViewDue"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_weight="1"
                     android:hint="@string/add_datetime"
                     android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/imageButtonRemove"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_remove"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
