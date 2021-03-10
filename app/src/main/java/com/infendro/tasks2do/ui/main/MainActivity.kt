@@ -1,7 +1,9 @@
-package com.infendro.tasks2do.activities.ui
+package com.infendro.tasks2do.ui.main
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceManager
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.List
@@ -12,10 +14,7 @@ import java.time.LocalTime
 
 class MainActivity : AppCompatActivity() {
 
-    //TODO edit tasks (partially done)
-    //TODO settings fragment with preferences
     //TODO save on sd card or internal storage (gson)
-    //TODO add time when creating Todo
 
     //TODO program personal serialisation format
 
@@ -28,6 +27,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        prefs.registerOnSharedPreferenceChangeListener{ sharedPrefs, key ->
+            preferenceChanged(sharedPrefs,key)
+        }
+
         //TODO remove later
         val list = List()
 
@@ -57,6 +61,38 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+    }
+
+    fun preferenceChanged(sharedPrefs: SharedPreferences, key: String){
+        when(key){
+            "theme" -> {
+                when(sharedPrefs.getString(key,"system")){
+                    "dark" -> {
+                        //TODO
+                    }
+                    "light" -> {
+                        //TODO
+                    }
+                    "system" -> {
+                        //TODO
+                    }
+                }
+            }
+            "savelocation" -> {
+                when(sharedPrefs.getString(key,"phone")){
+                    "phone" -> {
+                        //TODO
+                        //Storage.setLocation(Location.PHONE)
+                        //Storage.save(lists)
+                    }
+                    "sdcard" -> {
+                        //TODO
+                        //Storage.setLocation(Location.SDCARD)
+                        //Storage.save(lists)
+                    }
+                }
+            }
+        }
     }
 
     fun TEST_addTask(title: String,list: List){

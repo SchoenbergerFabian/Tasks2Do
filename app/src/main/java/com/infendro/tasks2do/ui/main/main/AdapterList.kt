@@ -1,4 +1,4 @@
-package com.infendro.tasks2do.activities.ui.fragments.main.adapters
+package com.infendro.tasks2do.ui.main.main
 
 import android.app.Activity
 import android.view.*
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Task
-import com.infendro.tasks2do.activities.ui.fragments.main.FragmentMain
 
 class AdapterList(private val activity: Activity, private val list: List) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -23,7 +22,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
 
     init {
         adapter = this
-        checkedTasks=list.checkedTasks.isNotEmpty()
+        checkedTasks =list.checkedTasks.isNotEmpty()
     }
 
     private val HEADER = 1
@@ -222,7 +221,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
 
                         if(list.checkedTasks.isEmpty()){
                             adapter.notifyItemRemoved(adapter.itemCount-2)
-                            checkedTasks=false
+                            checkedTasks =false
                             checkedTasksShown = false
                         }
 
@@ -230,7 +229,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                     }
                     false -> {
                         list.check(adapterPosition-1)
-                        checkedTasks=true
+                        checkedTasks =true
 
                         //update image
                         setCheckedImage(task)
@@ -238,7 +237,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                         if(checkedTasksShown){
                             adapter.notifyItemRemoved(adapterPosition)
                             adapter.notifyItemInserted(adapter.getAdapterPositionOfCheckedIndex0())
-                            adapter.notifyItemRangeChanged(adapterPosition,adapter.getAdapterPositionOfCheckedIndex0())
+                            adapter.notifyItemRangeChanged(adapterPosition, adapter.getAdapterPositionOfCheckedIndex0())
                         }else{
                             adapter.notifyItemRemoved(adapterPosition)
                         }
@@ -274,7 +273,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
             linearLayout.setOnClickListener {
                 when(checkedTasksShown){
                     false -> {
-                        checkedTasksShown=true
+                        checkedTasksShown =true
                         adapter.notifyItemRangeInserted(adapterPosition+1,list.checkedTasks.size)
 
                         if(list.checkedTasks.size>5){
@@ -287,7 +286,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                         imageViewExpand.animate().setDuration(200).rotation(180f)
                     }
                     true -> {
-                        checkedTasksShown=false
+                        checkedTasksShown =false
                         adapter.notifyItemRangeRemoved(adapterPosition+1,list.checkedTasks.size)
 
                         //rotate expand icon back

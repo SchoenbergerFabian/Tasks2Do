@@ -1,4 +1,4 @@
-package com.infendro.tasks2do.ui
+package com.infendro.tasks2do.ui.main
 
 import android.app.Activity
 import android.app.DatePickerDialog

@@ -11,7 +11,7 @@ import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import kotlinx.android.synthetic.main.fragment_detail.*
 import com.infendro.tasks2do.List
-import com.infendro.tasks2do.ui.DialogDateTimePicker
+import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 
 class FragmentDetail : Fragment() {
     private var list: List? = null

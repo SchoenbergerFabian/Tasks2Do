@@ -5,8 +5,22 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
+
+        <item name="android:dialogTheme">@style/AppTheme.Dialog</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog</item>
+
+        <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
+        <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
+
         <item name="android:textColorPrimary">@color/text</item>
         <item name="android:textColorSecondary">@color/text</item>
+    </style>
+
+    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Dialog">
+        <!--item name="android:windowBackground">@null</item-->
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/text</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Dialog_Create" parent="Theme.MaterialComponents.Dialog">

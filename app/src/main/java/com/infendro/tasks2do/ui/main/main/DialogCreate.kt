@@ -1,4 +1,4 @@
-package com.infendro.tasks2do.activities.ui.fragments.main.dialogs
+package com.infendro.tasks2do.ui.main.main
 
 import android.app.Activity
 import android.app.Dialog
@@ -10,8 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
-import com.infendro.tasks2do.activities.ui.fragments.main.FragmentMain
-import com.infendro.tasks2do.ui.DialogDateTimePicker
+import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 import kotlinx.android.synthetic.main.dialog_create.*
 
 

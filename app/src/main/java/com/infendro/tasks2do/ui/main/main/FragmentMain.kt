@@ -1,19 +1,21 @@
-package com.infendro.tasks2do.activities.ui.fragments.main
+package com.infendro.tasks2do.ui.main.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.activities.ui.fragments.main.adapters.AdapterList
-import com.infendro.tasks2do.activities.ui.MainActivity
-import com.infendro.tasks2do.activities.ui.fragments.main.dialogs.DialogCreate
+import com.infendro.tasks2do.ui.main.MainActivity
+import com.infendro.tasks2do.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class FragmentMain : Fragment() {
 
     companion object{
+        private val RQ_PREFERENCES = 1
+
         lateinit var adapter : AdapterList
         lateinit var recyclerview : RecyclerView
     }
@@ -33,7 +35,7 @@ class FragmentMain : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Companion.recyclerview=recyclerView
+        recyclerview =recyclerView
 
         //toolbar
         (activity as AppCompatActivity).setSupportActionBar(bottomAppBar)
@@ -78,7 +80,8 @@ class FragmentMain : Fragment() {
 
             }
             R.id.more -> {
-
+                //TODO temp
+                startActivityForResult(Intent(requireActivity(), SettingsActivity::class.java), RQ_PREFERENCES)
             }
         }
         return super.onOptionsItemSelected(item)

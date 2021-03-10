@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="savelocation_entries">
+        <item>@string/phone</item>
+        <item>@string/sdcard</item>
+    </string-array>
+    <string-array name="savelocation_values">
+        <item>phone</item>
+        <item>sdcard</item>
+    </string-array>
+
+    <string-array name="theme_entries">
+        <item>@string/darkmode</item>
+        <item>@string/lightmode</item>
+        <item>@string/systemdefault</item>
+    </string-array>
+    <string-array name="theme_values">
+        <item>dark</item>
+        <item>light</item>
+        <item>system</item>
+    </string-array>
+</resources>
