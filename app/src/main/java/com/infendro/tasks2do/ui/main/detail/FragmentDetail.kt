@@ -71,7 +71,18 @@ class FragmentDetail : Fragment() {
             imageButtonRemove.visibility=View.VISIBLE
         }
         due.setOnClickListener {
-            DialogDateTimePicker(requireActivity(),task,textViewDue,imageButtonRemove).show()
+            val dateTimePicker = DialogDateTimePicker(requireActivity(),task)
+            dateTimePicker.setOnDismissListener {
+                println("huh")
+                val dueString = task?.getDueString(requireActivity().getString(R.string.pattern_date,),requireActivity().getString(R.string.pattern_time,))
+                if(dueString!=null){
+                    println("HUH?")
+                    textViewDue.hint = ""
+                    textViewDue.text = dueString
+                    imageButtonRemove.visibility=View.VISIBLE
+                }
+            }
+            dateTimePicker.show()
         }
 
         imageButtonRemove.setOnClickListener {

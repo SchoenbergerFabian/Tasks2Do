@@ -49,7 +49,15 @@ class DialogCreate(private val activity: Activity, private val list: List) : Dia
         }
 
         val onClickListenerAddDateTime = View.OnClickListener {
-            DialogDateTimePicker(activity,task,textViewDue,due).show()
+            val dateTimePicker = DialogDateTimePicker(activity,task)
+            dateTimePicker.setOnDismissListener {
+                val dueString = task.getDueString(activity.getString(R.string.pattern_date),activity.getString(R.string.pattern_time))
+                if(dueString!=null){
+                    textViewDue.text = dueString
+                    due.visibility=View.VISIBLE
+                }
+            }
+            dateTimePicker.show()
         }
         imageButtonAddDatetime.setOnClickListener(onClickListenerAddDateTime)
         textViewDue.setOnClickListener(onClickListenerAddDateTime)

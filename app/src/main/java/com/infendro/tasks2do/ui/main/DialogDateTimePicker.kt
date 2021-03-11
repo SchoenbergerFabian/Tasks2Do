@@ -19,38 +19,40 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 
-class DialogDateTimePicker(private val activity: Activity, private val task: Task?, private val textView: TextView, private val goneView: View?) : Dialog(activity) {
+class DialogDateTimePicker(private val activity: Activity, private val task: Task?) : Dialog(activity) {
 
-    private var tempDueTime: LocalTime? = null
+    private var tempDueDate: LocalDate? = task?.dueDate
+    private var tempDueTime: LocalTime? = task?.dueTime
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_datetimepicker)
 
         //<date>
-        val localDate = task?.dueDate ?: LocalDate.now()
-        datePicker.init(localDate.year,
-                localDate.monthValue,
-                localDate.dayOfMonth,
-                null)
+        val localDate = tempDueDate ?: LocalDate.now()
+        val calendar = Calendar.getInstance()
+        calendar.set(localDate.year,localDate.monthValue-1,localDate.dayOfMonth)
+        datePicker.date = calendar.timeInMillis
+
+        datePicker.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            tempDueDate = LocalDate.of(year, month+1, dayOfMonth)
+        }
 
         //<time>
-        val dueTimeString = task?.getDueTimeString(activity.getString(R.string.pattern_time))
+        val dueTimeString = getDueTimeString(activity.getString(R.string.pattern_time))
         if(dueTimeString!=null){
-            textViewDueTime.hint = ""
-            textViewDueTime.text = dueTimeString
-            imageButtonRemove.visibility = View.VISIBLE
+            showTime(dueTimeString)
         }
+
         dueTime.setOnClickListener {
             showTimePicker()
         }
 
         imageButtonRemove.setOnClickListener{
-            imageButtonRemove.visibility=View.GONE
-            textViewDueTime.hint=activity.getString(R.string.add_time)
-            textViewDueTime.text=""
-            task?.dueTime=null
+            tempDueTime=null
+            hideTime()
         }
         //</time>
 
@@ -59,11 +61,8 @@ class DialogDateTimePicker(private val activity: Activity, private val task: Tas
         }
 
         buttonDoneDate.setOnClickListener{
-            task?.dueDate = LocalDate.of(datePicker.year,datePicker.month,datePicker.dayOfMonth)
+            task?.dueDate = tempDueDate
             task?.dueTime = tempDueTime
-            textView.hint = ""
-            textView.text = task?.getDueString(activity.getString(R.string.pattern_date),activity.getString(R.string.pattern_time))
-            goneView?.visibility = View.VISIBLE
             dismiss()
         }
         //</date>
@@ -77,7 +76,7 @@ class DialogDateTimePicker(private val activity: Activity, private val task: Tas
             shown = true
         }
 
-        val localTime = task?.dueTime?:LocalTime.now()
+        val localTime = tempDueTime?:LocalTime.now()
         timePicker.hour = localTime.hour
         timePicker.minute = localTime.minute
 
@@ -108,6 +107,22 @@ class DialogDateTimePicker(private val activity: Activity, private val task: Tas
         timePicker.findViewById<View>(Resources.getSystem().getIdentifier("hours", "id", "android")).performClick()
         time.visibility = View.GONE
         date.visibility = View.VISIBLE
+    }
+
+    private fun showTime(dueTime : String){
+        textViewDueTime.hint = ""
+        textViewDueTime.text = dueTime
+        imageButtonRemove.visibility = View.VISIBLE
+    }
+
+    private fun hideTime(){
+        imageButtonRemove.visibility=View.GONE
+        textViewDueTime.hint=activity.getString(R.string.add_time)
+        textViewDueTime.text=""
+    }
+
+    private fun getDueTimeString(patternTime: String) : String? {
+        return tempDueTime?.format(DateTimeFormatter.ofPattern(patternTime))
     }
 
 }
