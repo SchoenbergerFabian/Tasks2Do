@@ -11,7 +11,9 @@ import com.infendro.tasks2do.List
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
+import com.infendro.tasks2do.ui.main.MainActivity
 import kotlinx.android.synthetic.main.dialog_create.*
+import kotlinx.coroutines.MainScope
 
 
 class DialogCreate(private val activity: Activity, private val list: List) : Dialog(activity,R.style.Dialog_Create) {
@@ -34,6 +36,7 @@ class DialogCreate(private val activity: Activity, private val list: List) : Dia
                     list.uncheckedTasks.add(0, task)
                     FragmentMain.adapter.notifyItemInserted(FragmentMain.adapter.getAdapterPositionOfUncheckedIndex0())
                     FragmentMain.recyclerview.scrollToPosition(0)
+                    MainActivity.save(activity)
                     dismiss()
                 }
             }

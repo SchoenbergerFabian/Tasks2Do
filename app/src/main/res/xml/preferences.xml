@@ -3,18 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:defaultValue="0"
+        android:defaultValue="@string/system_val"
         android:entries="@array/theme_entries"
         android:entryValues="@array/theme_values"
         android:icon="@drawable/ic_theme"
-        android:key="theme"
+        android:key="@string/theme_key"
         android:title="@string/theme" />
     <ListPreference
-        android:defaultValue="0"
-        android:entries="@array/savelocation_entries"
-        android:entryValues="@array/savelocation_values"
+        android:defaultValue="@string/phone_val"
+        android:entries="@array/location_entries"
+        android:entryValues="@array/location_values"
         android:icon="@drawable/ic_save"
-        android:key="savelocation"
-        android:title="@string/savelocation" />
+        android:key="@string/location_key"
+        android:title="@string/location" />
 </PreferenceScreen>
     <!--androidx.preference.-->

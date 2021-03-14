@@ -77,7 +77,7 @@ class FragmentMain : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.home -> {
-
+                //TODO
             }
             R.id.more -> {
                 //TODO temp

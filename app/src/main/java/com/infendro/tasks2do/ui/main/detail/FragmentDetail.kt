@@ -12,6 +12,7 @@ import com.infendro.tasks2do.Task
 import kotlinx.android.synthetic.main.fragment_detail.*
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
+import com.infendro.tasks2do.ui.main.MainActivity
 
 class FragmentDetail : Fragment() {
     private var list: List? = null
@@ -57,11 +58,13 @@ class FragmentDetail : Fragment() {
         editTextTitle.setText(task?.title)
         editTextTitle.doOnTextChanged { text, _, _, _ ->
             task?.title = text.toString()
+            MainActivity.save(requireActivity())
         }
 
         editTextDetails.setText(task?.details)
         editTextDetails.doOnTextChanged{ text, _, _, _ ->
             task?.details = text.toString()
+            MainActivity.save(requireActivity())
         }
 
         val dueString = task?.getDueString(requireActivity().getString(R.string.pattern_date),requireActivity().getString(R.string.pattern_time))
@@ -73,10 +76,9 @@ class FragmentDetail : Fragment() {
         due.setOnClickListener {
             val dateTimePicker = DialogDateTimePicker(requireActivity(),task)
             dateTimePicker.setOnDismissListener {
-                println("huh")
+                MainActivity.save(requireActivity())
                 val dueString = task?.getDueString(requireActivity().getString(R.string.pattern_date,),requireActivity().getString(R.string.pattern_time,))
                 if(dueString!=null){
-                    println("HUH?")
                     textViewDue.hint = ""
                     textViewDue.text = dueString
                     imageButtonRemove.visibility=View.VISIBLE
@@ -91,6 +93,8 @@ class FragmentDetail : Fragment() {
             imageButtonRemove.visibility=View.GONE
             task?.dueTime=null
             task?.dueDate=null
+
+            MainActivity.save(requireActivity())
         }
 
         setCheckedImage()
@@ -120,6 +124,7 @@ class FragmentDetail : Fragment() {
     }
 
     private fun navigateBack(){
+        MainActivity.save(requireActivity())
         requireActivity().currentFocus?.clearFocus()
         findNavController().navigate(R.id.action_fragmentDetail_to_fragment_Main)
     }

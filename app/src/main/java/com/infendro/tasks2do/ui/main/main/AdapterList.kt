@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Task
+import com.infendro.tasks2do.ui.main.MainActivity
 
 class AdapterList(private val activity: Activity, private val list: List) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -212,6 +213,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                 when(task.checked){
                     true -> {
                         list.uncheck(adapter.getCheckedIndex(adapterPosition))
+                        MainActivity.save(activity)
 
                         //update image
                         setCheckedImage(task)
@@ -229,7 +231,8 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                     }
                     false -> {
                         list.check(adapterPosition-1)
-                        checkedTasks =true
+                        MainActivity.save(activity)
+                        checkedTasks=true
 
                         //update image
                         setCheckedImage(task)

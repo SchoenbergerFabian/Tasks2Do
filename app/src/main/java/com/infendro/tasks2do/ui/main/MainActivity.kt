@@ -1,96 +1,123 @@
 package com.infendro.tasks2do.ui.main
 
+import android.app.Activity
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
-import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Task
+import com.infendro.tasks2do.*
 import com.infendro.tasks2do.List
-import com.infendro.tasks2do.Lists
+import com.infendro.tasks2do.Storage
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.time.LocalDate
 import java.time.LocalTime
 
 
-class MainActivity : AppCompatActivity() {
-
-    //TODO save on sd card or internal storage (gson)
-
-    //TODO program personal serialisation format
-
-    //TODO multiple Todo lists (drawer from below)
-    //TODO better edittext style
-    //TODO highlighting
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object{
-        val lists = Lists() //TODO load
+        lateinit var lists : Lists
+
+        fun save(activity: Activity){
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+            when(sharedPreferences.getString(activity.getString(R.string.location_key),"")){
+                activity.getString(R.string.phone_val) -> {
+                    val outputStream = activity.openFileOutput(activity.getString(R.string.filename), Context.MODE_PRIVATE)
+                    Storage.save(outputStream, lists)
+                }
+                activity.getString(R.string.sdcard_val) -> {
+                    if(Storage.isSDMounted()){
+                        val outputStream = FileOutputStream(File(activity.getExternalFilesDir(null),activity.getString(R.string.filename)))
+                        Storage.save(outputStream, lists)
+                    }else{
+                        Toast.makeText(activity,activity.getString(R.string.sd_not_accessible),Toast.LENGTH_SHORT).show()
+                    }
+                }
+                else /*change to phone*/ -> {
+                    sharedPreferences.edit().putString(activity.getString(R.string.location_key),activity.getString(R.string.phone_val)).apply()
+                    save(activity)
+                }
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        prefs.registerOnSharedPreferenceChangeListener{ sharedPrefs, key ->
-            preferenceChanged(sharedPrefs,key)
-        }
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        lists = loadLists(sharedPreferences.getString(getString(R.string.location_key),""))
 
         //TODO remove later
-        val list = List()
-
-        list.title = "TEST"
-
-        TEST_addTask("TEST1",list)
-        TEST_addTask("TEST2",list)
-        TEST_addTask_withDetails("TEST3",list)
-        TEST_addTask_withDetails("TEST4",list)
-        TEST_addTask_withDetails_withDueDateTime("TEST5",list)
-        TEST_addTask_withDetails_withDueDateTime("TEST6",list)
-        TEST_addTask_withDueDate("TEST7",list)
-        TEST_addTask_withDueDate("TEST8",list)
-        TEST_addTask_withDueDateTime("TEST9",list)
-        TEST_addTask_withDueDateTime("TEST10",list)
-        TEST_addTask_checked("TEST11",list)
-        TEST_addTask_checked("TEST12",list)
-        TEST_addTask_checked("TEST13",list)
-        TEST_addTask_checked("TEST14",list)
-        TEST_addTask_checked("TEST15",list)
-        TEST_addTask_checked("TEST16",list)
-        TEST_addTask_checked("TEST17",list)
-        TEST_addTask_checked("TEST18",list)
-
-        lists.addList(list)
+        if(lists.lists.size==0){
+            val list = List()
+            list.title = "Test"
+            lists.addList(list)
+        }
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
     }
 
-    fun preferenceChanged(sharedPrefs: SharedPreferences, key: String){
+    private fun loadLists(location: String?) : Lists {
+        return when(location){
+            getString(R.string.phone_val) -> {
+                val inputStream = openFileInput(getString(R.string.filename))
+                Storage.load(inputStream)
+            }
+            getString(R.string.sdcard_val) -> {
+                if(Storage.isSDMounted()){
+                    val inputStream = FileInputStream(File(getExternalFilesDir(null),getString(R.string.filename)))
+                    Storage.load(inputStream)
+                }else{
+                    Toast.makeText(this,getString(R.string.sd_not_accessible),Toast.LENGTH_SHORT).show()
+                    Lists()
+                }
+            }
+            else -> {
+                val lists = Lists()
+                val outputStream = openFileOutput(getString(R.string.filename), Context.MODE_PRIVATE)
+                Storage.save(outputStream, lists)
+                lists
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(null)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPrefs: SharedPreferences, key: String) {
+        preferenceChanged(sharedPrefs, key)
+    }
+
+    private fun preferenceChanged(sharedPrefs: SharedPreferences, key: String){
         when(key){
-            "theme" -> {
-                when(sharedPrefs.getString(key,"system")){
-                    "dark" -> {
+            getString(R.string.theme_key) -> {
+                when(sharedPrefs.getString(key,getString(R.string.system_val))){
+                    getString(R.string.darkmode_val) -> {
                         //TODO
                     }
-                    "light" -> {
+                    getString(R.string.lightmode_val) -> {
                         //TODO
                     }
-                    "system" -> {
+                    getString(R.string.system_val) -> {
                         //TODO
                     }
                 }
             }
-            "savelocation" -> {
-                when(sharedPrefs.getString(key,"phone")){
-                    "phone" -> {
-                        //TODO
-                        //Storage.setLocation(Location.PHONE)
-                        //Storage.save(lists)
-                    }
-                    "sdcard" -> {
-                        //TODO
-                        //Storage.setLocation(Location.SDCARD)
-                        //Storage.save(lists)
-                    }
-                }
+            getString(R.string.location_key) -> {
+                save(this)
             }
         }
     }
