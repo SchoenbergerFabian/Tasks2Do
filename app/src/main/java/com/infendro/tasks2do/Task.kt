@@ -5,8 +5,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-class Task(var title: String?, var details: String?, var dueDate: LocalDate?, var dueTime: LocalTime?, var checked: Boolean) : Serializable {
-    constructor() : this(null, null, null, null, false)
+class Task(var title: String, var details: String?, var dueDate: LocalDate?, var dueTime: LocalTime?, var checked: Boolean) : Serializable {
+    constructor() : this("", null, null, null, false)
 
     fun getDueString(patternDate: String, patternTime: String) : String? {
         return if(dueDate!=null){
