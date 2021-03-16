@@ -13,10 +13,9 @@ import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 import com.infendro.tasks2do.ui.main.MainActivity
 import kotlinx.android.synthetic.main.dialog_create.*
-import kotlinx.coroutines.MainScope
 
 
-class DialogCreate(private val activity: Activity, private val list: List) : Dialog(activity,R.style.Dialog_Create) {
+class DialogCreate(private val activity: Activity, private val list: List) : Dialog(activity,R.style.Dialog) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_create)

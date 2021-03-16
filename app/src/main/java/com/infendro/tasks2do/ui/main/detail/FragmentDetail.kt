@@ -63,7 +63,7 @@ class FragmentDetail : Fragment() {
 
         editTextDetails.setText(task?.details)
         editTextDetails.doOnTextChanged{ text, _, _, _ ->
-            task?.details = text.toString()
+            task?.details = when(text.toString()) {"" -> null else -> text.toString()}
             MainActivity.save(requireActivity())
         }
 

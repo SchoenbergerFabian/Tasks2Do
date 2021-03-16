@@ -1,31 +1,63 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@color/windowBackground</item>
+
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorControlNormal">@color/colorControlNormal</item>
 
-        <item name="android:dialogTheme">@style/AppTheme.Dialog</item>
-        <item name="dialogTheme">@style/AppTheme.Dialog</item>
+        <!--toolbars-->
+        <item name="bottomAppBarStyle">@style/AppBar</item>
+        <item name="actionBarTheme">@style/ActionBar</item>
 
-        <item name="android:alertDialogTheme">@style/AppTheme.Dialog</item>
-        <item name="alertDialogTheme">@style/AppTheme.Dialog</item>
+        <!--dialogs-->
+        <item name="android:dialogTheme">@style/Dialog</item>
+        <item name="dialogTheme">@style/Dialog</item>
+        <item name="android:alertDialogTheme">@style/Dialog</item>
+        <item name="alertDialogTheme">@style/Dialog</item>
 
+        <!--textColor-->
+        <item name="android:textColor">@color/text</item>
         <item name="android:textColorPrimary">@color/text</item>
         <item name="android:textColorSecondary">@color/text</item>
+        <item name="android:textColorHint">@color/hint</item>
+        <item name="hintTextColor">@color/hint</item>
+
+        <!--icons-->
+        <item name="colorControlNormal">@color/icon</item>
+
     </style>
 
-    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Dialog">
+    <style name="AppBar" parent="Widget.MaterialComponents.BottomAppBar">
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/icon</item>
+    </style>
+
+    <style name="ActionBar" parent="Theme.AppCompat.DayNight">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/icon</item>
+    </style>
+
+    <style name="Dialog" parent="Theme.MaterialComponents.DayNight.Dialog">
         <item name="android:windowBackground">@color/dialog_background</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="colorPrimary">@color/text</item>
+        <item name="windowNoTitle">true</item>
+
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorPrimary">@color/text</item>
+
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/text</item>
+        <item name="android:textColorHint">@color/hint</item>
     </style>
 
-    <style name="Dialog_Create" parent="Theme.MaterialComponents.Dialog">
-        <item name="android:windowBackground">@color/dialog_background</item>
-        <item name="android:windowNoTitle">true</item>
+    <style name="TimePicker" parent="@android:style/Widget.Material.TimePicker">
+        <item name="android:headerBackground">@color/timePicker</item>
+        <item name="android:numbersBackgroundColor">@color/timePicker</item>
+        <item name="android:numbersTextColor">@color/text</item>
+        <item name="android:numbersSelectorColor">@color/colorAccent</item>
     </style>
 
 </resources>

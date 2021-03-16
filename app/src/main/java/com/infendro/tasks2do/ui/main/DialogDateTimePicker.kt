@@ -31,9 +31,9 @@ class DialogDateTimePicker(private val activity: Activity, private val task: Tas
         setContentView(R.layout.dialog_datetimepicker)
 
         //<date>
-        val localDate = tempDueDate ?: LocalDate.now()
+        tempDueDate = tempDueDate ?: LocalDate.now()
         val calendar = Calendar.getInstance()
-        calendar.set(localDate.year,localDate.monthValue-1,localDate.dayOfMonth)
+        calendar.set(tempDueDate!!.year,tempDueDate!!.monthValue-1,tempDueDate!!.dayOfMonth)
         datePicker.date = calendar.timeInMillis
 
         datePicker.setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -76,9 +76,9 @@ class DialogDateTimePicker(private val activity: Activity, private val task: Tas
             shown = true
         }
 
-        val localTime = tempDueTime?:LocalTime.now()
-        timePicker.hour = localTime.hour
-        timePicker.minute = localTime.minute
+        tempDueTime = tempDueTime?:LocalTime.now()
+        timePicker.hour = tempDueTime!!.hour
+        timePicker.minute = tempDueTime!!.minute
 
         date.visibility = View.GONE
         time.visibility = View.VISIBLE

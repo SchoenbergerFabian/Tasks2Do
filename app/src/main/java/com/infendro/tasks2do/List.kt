@@ -9,15 +9,11 @@ class List(var title: String, val uncheckedTasks: ArrayList<Task>, val checkedTa
         val task = uncheckedTasks.removeAt(position)
         task.checked=true
         checkedTasks.add(0,task)
-
-        println(task.getDueString("dd.MM.yyyy","HH:mm"))
     }
 
     fun uncheck(position: Int){
         val task = checkedTasks.removeAt(position)
         task.checked=false
         uncheckedTasks.add(0,task)
-
-        println(task.getDueString("dd.MM.yyyy","HH:mm"))
     }
 }

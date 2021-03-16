@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.infendro.tasks2do.*
 import com.infendro.tasks2do.List
@@ -50,6 +51,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         lists = loadLists(sharedPreferences.getString(getString(R.string.location_key),""))
 
+        changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
+
         //TODO remove later
         if(lists.lists.size==0){
             val list = List()
@@ -77,6 +80,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 }
             }
             else -> {
+                //first time loading:
+                //save new Lists object on phone and return it
                 val lists = Lists()
                 val outputStream = openFileOutput(getString(R.string.filename), Context.MODE_PRIVATE)
                 Storage.save(outputStream, lists)
@@ -104,20 +109,24 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     private fun preferenceChanged(sharedPrefs: SharedPreferences, key: String){
         when(key){
             getString(R.string.theme_key) -> {
-                when(sharedPrefs.getString(key,getString(R.string.system_val))){
-                    getString(R.string.darkmode_val) -> {
-                        //TODO
-                    }
-                    getString(R.string.lightmode_val) -> {
-                        //TODO
-                    }
-                    getString(R.string.system_val) -> {
-                        //TODO
-                    }
-                }
+                changeTheme(sharedPrefs.getString(key,getString(R.string.system_val)))
             }
             getString(R.string.location_key) -> {
                 save(this)
+            }
+        }
+    }
+
+    private fun changeTheme(value: String?){
+        when(value) {
+            getString(R.string.system_val) -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            getString(R.string.darkmode_val) -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            getString(R.string.lightmode_val) -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
     }

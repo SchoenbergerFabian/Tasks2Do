@@ -185,6 +185,10 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                 textViewDetails.visibility = View.GONE
             }
 
+            bindDue(task)
+        }
+
+        private fun bindDue(task: Task){
             val due = task.getDueString(activity.getString(R.string.pattern_date),activity.getString(R.string.pattern_time))
             if(due!=null&&!task.checked){
                 textViewDue.text = due
@@ -219,6 +223,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                         setCheckedImage(task)
 
                         adapter.notifyItemMoved(adapterPosition,1)
+                        bindDue(task)
                         bindButton(task)
 
                         if(list.checkedTasks.isEmpty()){
