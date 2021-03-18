@@ -285,9 +285,9 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                         adapter.notifyItemRangeInserted(adapterPosition+1,list.checkedTasks.size)
 
                         if(list.checkedTasks.size>5){
-                            FragmentMain.recyclerview.scrollToPosition(adapterPosition+6)
+                            FragmentMain.recyclerView.scrollToPosition(adapterPosition+6)
                         }else{
-                            FragmentMain.recyclerview.scrollToPosition(adapterPosition+list.checkedTasks.size+1)
+                            FragmentMain.recyclerView.scrollToPosition(adapterPosition+list.checkedTasks.size+1)
                         }
 
                         //rotate expand icon 180°

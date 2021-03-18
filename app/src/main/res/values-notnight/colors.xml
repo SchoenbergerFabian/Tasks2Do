@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="windowBackground">#FFFFFF</color>
+    <color name="colorHighlighted">#E6E6E6</color>
 
     <color name="colorPrimary">#F0F0F0</color>
     <color name="colorPrimaryDark">#787878</color>
@@ -14,6 +15,5 @@
     <color name="due_late">#FF4747</color>
     <color name="details">#6E6E6E</color>
 
-    <color name="dialog_background">#F5F5F5</color>
     <color name="timePicker">#C8C8C8</color>
 </resources>

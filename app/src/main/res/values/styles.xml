@@ -16,6 +16,7 @@
         <item name="dialogTheme">@style/Dialog</item>
         <item name="android:alertDialogTheme">@style/Dialog</item>
         <item name="alertDialogTheme">@style/Dialog</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheet</item>
 
         <!--textColor-->
         <item name="android:textColor">@color/text</item>
@@ -35,12 +36,23 @@
     </style>
 
     <style name="ActionBar" parent="Theme.AppCompat.DayNight">
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="colorControlNormal">@color/icon</item>
     </style>
 
+    <style name="BottomSheet" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:colorBackground">@color/windowBackground</item>
+        <item name="android:windowIsFloating">true</item>
+
+        <item name="colorPrimary">@color/text</item>
+
+        <item name="android:textColor">@color/text</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/text</item>
+    </style>
+
     <style name="Dialog" parent="Theme.MaterialComponents.DayNight.Dialog">
-        <item name="android:windowBackground">@color/dialog_background</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
         <item name="windowNoTitle">true</item>
 
         <item name="colorAccent">@color/colorAccent</item>

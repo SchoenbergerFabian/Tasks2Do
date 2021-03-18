@@ -53,13 +53,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
 
-        //TODO remove later
-        if(lists.lists.size==0){
-            val list = List()
-            list.title = "Test"
-            lists.addList(list)
-        }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
@@ -81,8 +74,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             }
             else -> {
                 //first time loading:
-                //save new Lists object on phone and return it
+                //create new lists object and add a default list to it
+                //save lists object on phone and return it
                 val lists = Lists()
+                val list = List()
+                list.title = "ToDo"
+                lists.addList(list)
                 val outputStream = openFileOutput(getString(R.string.filename), Context.MODE_PRIVATE)
                 Storage.save(outputStream, lists)
                 lists
@@ -129,49 +126,5 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             }
         }
-    }
-
-    fun TEST_addTask(title: String,list: List){
-        val task = Task()
-        task.title = "$title"
-        list.uncheckedTasks.add(task)
-    }
-
-    fun TEST_addTask_withDetails(title: String,list: List){
-        val task = Task()
-        task.title = "$title details"
-        task.details = "details"
-        list.uncheckedTasks.add(task)
-    }
-
-    fun TEST_addTask_withDueDate(title: String,list: List){
-        val task = Task()
-        task.title = "$title date"
-        task.dueDate = LocalDate.now()
-        list.uncheckedTasks.add(task)
-    }
-
-    fun TEST_addTask_withDueDateTime(title: String,list: List){
-        val task = Task()
-        task.title = "$title datetime"
-        task.dueDate = LocalDate.now()
-        task.dueTime = LocalTime.now()
-        list.uncheckedTasks.add(task)
-    }
-
-    fun TEST_addTask_withDetails_withDueDateTime(title: String,list: List){
-        val task = Task()
-        task.title = "$title details datetime"
-        task.details = "details"
-        task.dueDate = LocalDate.now()
-        task.dueTime = LocalTime.now()
-        list.uncheckedTasks.add(task)
-    }
-
-    fun TEST_addTask_checked(title: String,list: List){
-        val task = Task()
-        task.title = "$title checked"
-        task.checked=true
-        list.checkedTasks.add(task)
     }
 }

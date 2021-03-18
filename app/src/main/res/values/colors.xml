@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="windowBackground">#262626</color>
+    <color name="windowBackground">#373737</color>
+    <color name="colorHighlighted">#464646</color>
 
-    <color name="colorPrimary">#232323</color>
+    <color name="colorPrimary">#2D2D2D</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>
     <color name="colorAccent">#3C73FF</color>
     <color name="colorControlNormal">#AAAAAA</color>
@@ -17,6 +18,5 @@
     <color name="invalid">#737373</color>
     <color name="details">#919191</color>
 
-    <color name="dialog_background">#232323</color>
     <color name="timePicker">#555555</color>
 </resources>
