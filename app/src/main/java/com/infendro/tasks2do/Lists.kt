@@ -12,15 +12,17 @@ class Lists(val lists: ArrayList<List>, var currentList: Int) {
     }
 
     //returns if current list changed
-    fun removeList(list: Int) : Boolean {
+    fun removeList(list: Int) {
         lists.removeAt(list)
 
         if(list == currentList){
-            currentList=0
-            return true
+            currentList = if(lists.size==0){
+                -1
+            }else{
+                0
+            }
         }
 
-        return false
     }
 
     fun getCurrentList() : List? {

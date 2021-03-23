@@ -5,12 +5,18 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.ui.main.MainActivity
 import com.infendro.tasks2do.ui.main.MainActivity.Companion.lists
+import com.infendro.tasks2do.ui.main.list.FragmentCreateList
 import com.infendro.tasks2do.ui.main.main.FragmentMain
 import kotlinx.android.synthetic.main.bottomsheetdialog_lists.*
 
@@ -41,13 +47,8 @@ class BottomSheetDialogLists : BottomSheetDialogFragment() {
         bottomSheetDialogLists=this
 
         textViewCreateList.setOnClickListener {
-            val list = List()
-            list.title = "New list"
-            lists.addList(list)
-
-            FragmentMain.updateUI()
-            MainActivity.save(requireActivity())
-
+            FragmentCreateList.lists = lists
+            requireActivity().findNavController(R.id.nav).navigate(R.id.action_fragment_Main_to_fragmentCreateList)
             dismiss()
         }
 

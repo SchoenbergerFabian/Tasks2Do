@@ -2,6 +2,7 @@
 <resources>
     <color name="windowBackground">#373737</color>
     <color name="colorHighlighted">#464646</color>
+    <color name="colorDivider">#505050</color>
 
     <color name="colorPrimary">#2D2D2D</color>
     <color name="colorPrimaryDark">@color/colorPrimary</color>

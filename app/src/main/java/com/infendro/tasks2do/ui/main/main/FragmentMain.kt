@@ -6,20 +6,20 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.ui.main.MainActivity
 import com.infendro.tasks2do.ui.main.main.dialogs.DialogCreate
 import com.infendro.tasks2do.ui.main.main.dialogs.lists.BottomSheetDialogLists
+import com.infendro.tasks2do.ui.main.main.dialogs.more.BottomSheetDialogMore
 import com.infendro.tasks2do.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class FragmentMain : Fragment() {
 
     companion object{
-        private val RQ_PREFERENCES = 1
-
         lateinit var activity: Activity
 
         lateinit var adapter : AdapterList
@@ -68,6 +68,8 @@ class FragmentMain : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().currentFocus?.clearFocus()
+
         //toolbar
         (activity as AppCompatActivity).setSupportActionBar(bottomAppBar)
 
@@ -94,8 +96,8 @@ class FragmentMain : Fragment() {
                     .show(requireActivity().supportFragmentManager, null)
             }
             R.id.more -> {
-                //TODO temp
-                startActivityForResult(Intent(requireActivity(), SettingsActivity::class.java), RQ_PREFERENCES)
+                BottomSheetDialogMore()
+                    .show(requireActivity().supportFragmentManager, null)
             }
         }
         return super.onOptionsItemSelected(item)

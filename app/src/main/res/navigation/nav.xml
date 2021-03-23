@@ -12,6 +12,12 @@
         <action
             android:id="@+id/action_fragment_Main_to_fragmentDetail"
             app:destination="@id/fragmentDetail" />
+        <action
+            android:id="@+id/action_fragment_Main_to_fragmentCreateList"
+            app:destination="@id/fragmentCreateList" />
+        <action
+            android:id="@+id/action_fragment_Main_to_fragmentRenameList"
+            app:destination="@id/fragmentRenameList" />
     </fragment>
     <fragment
         android:id="@+id/fragmentDetail"
@@ -20,6 +26,23 @@
         tools:layout="@layout/fragment_detail" >
         <action
             android:id="@+id/action_fragmentDetail_to_fragment_Main"
+            app:destination="@id/fragment_Main" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentCreateList"
+        android:name="com.infendro.tasks2do.ui.main.list.FragmentCreateList"
+        android:label="fragment_createlist"
+        tools:layout="@layout/fragment_create_list" >
+        <action
+            android:id="@+id/action_fragmentCreateList_to_fragment_Main"
+            app:destination="@id/fragment_Main" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentRenameList"
+        android:name="com.infendro.tasks2do.ui.main.list.FragmentRenameList"
+        android:label="FragmentRenameList" >
+        <action
+            android:id="@+id/action_fragmentRenameList_to_fragment_Main"
             app:destination="@id/fragment_Main" />
     </fragment>
 </navigation>

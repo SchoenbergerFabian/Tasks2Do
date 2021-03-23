@@ -2,6 +2,7 @@
 <resources>
     <color name="windowBackground">#FFFFFF</color>
     <color name="colorHighlighted">#E6E6E6</color>
+    <color name="colorDivider">#A5A5A5</color>
 
     <color name="colorPrimary">#F0F0F0</color>
     <color name="colorPrimaryDark">#787878</color>
@@ -9,7 +10,7 @@
     <color name="text">#000000</color>
     <color name="hint">#6E6E6E</color>
 
-    <color name="icon">#000000</color>
+    <color name="icon">@color/text</color>
 
     <color name="due">#324DFF</color>
     <color name="due_late">#FF4747</color>

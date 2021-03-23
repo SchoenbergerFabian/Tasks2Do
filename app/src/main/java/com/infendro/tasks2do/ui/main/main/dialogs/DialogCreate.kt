@@ -28,11 +28,11 @@ class DialogCreate(private val activity: Activity, private val list: List) : Dia
 
         editTextTitle.doOnTextChanged { text, _, _, count ->
             if(count==0){
-                buttonSave.setTextColor(activity.getColor(R.color.invalid))
-                buttonSave.setOnClickListener(null)
+                buttonDone.setTextColor(activity.getColor(R.color.invalid))
+                buttonDone.setOnClickListener(null)
             }else{
-                buttonSave.setTextColor(activity.getColor(R.color.colorAccent))
-                buttonSave.setOnClickListener {
+                buttonDone.setTextColor(activity.getColor(R.color.colorAccent))
+                buttonDone.setOnClickListener {
                     list.uncheckedTasks.add(0, task)
                     FragmentMain.adapter.notifyItemInserted(
                         FragmentMain.adapter.getAdapterPositionOfUncheckedIndex0())

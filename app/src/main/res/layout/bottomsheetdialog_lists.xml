@@ -8,6 +8,22 @@
     android:orientation="vertical"
     android:overScrollMode="never">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLists"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:nestedScrollingEnabled="true"
+        android:overScrollMode="ifContentScrolls"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider" />
+
     <TextView
         android:id="@+id/textViewCreateList"
         android:layout_width="match_parent"
@@ -15,20 +31,9 @@
         android:background="@color/windowBackground"
         android:drawableLeft="@drawable/ic_create"
         android:drawablePadding="8dp"
-        android:elevation="10dp"
         android:gravity="center_vertical"
         android:padding="10dp"
         android:text="@string/create_list"
         android:textSize="18sp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewLists"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="true"
-        android:overScrollMode="ifContentScrolls"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
-
-    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>
