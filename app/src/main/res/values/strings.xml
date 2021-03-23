@@ -29,17 +29,9 @@
     <string name="system">System default</string>
     <string name="system_val">system</string>
 
-    <string name="location">Save location</string>
-    <string name="location_key">location</string>
-    <string name="phone">Phone</string>
-    <string name="phone_val">phone</string>
-    <string name="sdcard">SD-card</string>
-    <string name="sdcard_val">sd</string>
-
     <string name="filename">Tasks2Do.save</string>
-
-    <string name="sd_not_accessible">SD-card not accessible</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="first_load">first_load</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
 
 </resources>

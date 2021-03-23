@@ -1,5 +1,9 @@
 package com.infendro.tasks2do
 
+import android.app.Activity
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Environment
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -24,19 +28,63 @@ class Storage {
                 .create()
         }
 
-        fun save(outputStream: FileOutputStream, lists: Lists){
-            val printWriter = PrintWriter(outputStream)
+        fun saveToPhone(activity: Activity, lists: Lists){
+            val printWriter = PrintWriter(activity.openFileOutput(activity.getString(R.string.filename), Context.MODE_PRIVATE))
             printWriter.println(getGson().toJson(lists))
             printWriter.flush()
             printWriter.close()
         }
 
-        fun load(inputStream: FileInputStream) : Lists{
-            return getGson().fromJson(InputStreamReader(inputStream), Lists::class.java)
+        fun addList(list: List){
+            //TODO
+            println("save new list to cloud")
         }
 
-        fun isSDMounted() : Boolean {
-            return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+        fun editList(list: List){
+            //TODO
+            println("save changed list to cloud")
+        }
+
+        fun removeList(list: List){
+            //TODO
+            println("remove list on cloud")
+        }
+
+        fun addTask(task: Task){
+            //TODO
+            println("save new task to cloud")
+        }
+
+        fun editTask(task: Task){
+            //TODO
+            println("save changed task to cloud")
+        }
+
+        fun removeTask(task: Task){
+            //TODO
+            println("remove task on cloud")
+        }
+
+        fun loadFromPhone(activity: Activity) : Lists{
+            return getGson().fromJson(InputStreamReader(activity.openFileInput(activity.getString(R.string.filename))), Lists::class.java)
+        }
+
+        fun loadFromCloud(username: String, password: String) : Lists {
+            //TODO
+            println("load from cloud")
+            return Lists()
+        }
+
+        fun hasInternetConnection(activity: Activity) : Boolean {
+            val connectivityManager = activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val networkCapabilities = connectivityManager.activeNetwork ?: return false
+            val activeNetwork = connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            return when {
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
         }
     }
 

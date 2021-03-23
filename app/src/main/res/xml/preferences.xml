@@ -9,12 +9,5 @@
         android:icon="@drawable/ic_theme"
         android:key="@string/theme_key"
         android:title="@string/theme" />
-    <ListPreference
-        android:defaultValue="@string/phone_val"
-        android:entries="@array/location_entries"
-        android:entryValues="@array/location_values"
-        android:icon="@drawable/ic_save"
-        android:key="@string/location_key"
-        android:title="@string/location" />
 </PreferenceScreen>
     <!--androidx.preference.-->

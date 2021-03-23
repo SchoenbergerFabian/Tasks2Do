@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="location_entries">
-        <item>@string/phone</item>
-        <item>@string/sdcard</item>
-    </string-array>
-    <string-array name="location_values">
-        <item>@string/phone_val</item>
-        <item>@string/sdcard_val</item>
-    </string-array>
-
     <string-array name="theme_entries">
         <item>@string/darkmode</item>
         <item>@string/lightmode</item>
