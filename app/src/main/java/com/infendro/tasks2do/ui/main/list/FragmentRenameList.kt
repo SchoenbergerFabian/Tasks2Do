@@ -37,6 +37,8 @@ class FragmentRenameList : Fragment() {
         imageButtonClose.setOnClickListener { navigateBack() }
 
         editTextTitle.setText(list.title)
+        makeValid(list.title)
+
         editTextTitle.doOnTextChanged { text, _, _, _ ->
             if(text.toString() == ""){
                 makeInvalid()
