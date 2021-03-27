@@ -51,8 +51,8 @@ class FragmentCreateList : Fragment() {
     }
 
     private fun makeValid(title: String){
-        buttonDone.setTextColor(requireActivity().getColor(R.color.colorAccent))
-        buttonDone.setOnClickListener {
+        buttonSave.setTextColor(requireActivity().getColor(R.color.colorAccent))
+        buttonSave.setOnClickListener {
             lists.addList(List(title))
             MainActivity.save(requireActivity())
             navigateBack()
@@ -60,8 +60,8 @@ class FragmentCreateList : Fragment() {
     }
 
     private fun makeInvalid(){
-        buttonDone.setTextColor(requireActivity().getColor(R.color.invalid))
-        buttonDone.setOnClickListener(null)
+        buttonSave.setTextColor(requireActivity().getColor(R.color.invalid))
+        buttonSave.setOnClickListener(null)
     }
 
     private fun navigateBack(){

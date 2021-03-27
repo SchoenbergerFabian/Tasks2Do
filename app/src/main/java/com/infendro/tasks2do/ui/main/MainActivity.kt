@@ -23,6 +23,21 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     //TODO AsyncTasks when saving
 
     companion object{
+        private lateinit var activity : Activity
+        private lateinit var sharedPreferences : SharedPreferences
+
+        lateinit var username: String
+        lateinit var password: String
+
+        fun changeLoginInfo(username: String, password: String){
+            sharedPreferences.edit()
+                .putString(activity.getString(R.string.username),username).putString(
+                activity.getString(R.string.password),password)
+                .apply()
+            this.username = username
+            this.password = password
+        }
+
         lateinit var lists : Lists
 
         fun save(activity: Activity){
@@ -31,10 +46,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        activity = this
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-        lists = loadLists(sharedPreferences.getString(getString(R.string.username),"")?:"",
-            sharedPreferences.getString(getString(R.string.password),"")?:"")
+        username = sharedPreferences.getString(getString(R.string.username),"")?:""
+        password = sharedPreferences.getString(getString(R.string.password),"")?:""
+
+        lists = loadLists(username, password)
 
         changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
 

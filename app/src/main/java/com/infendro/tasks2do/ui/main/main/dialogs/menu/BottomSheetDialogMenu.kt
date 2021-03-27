@@ -1,33 +1,25 @@
-package com.infendro.tasks2do.ui.main.main.dialogs.lists
+package com.infendro.tasks2do.ui.main.main.dialogs.menu
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.infendro.tasks2do.List
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.ui.main.MainActivity
 import com.infendro.tasks2do.ui.main.MainActivity.Companion.lists
 import com.infendro.tasks2do.ui.main.list.FragmentCreateList
-import com.infendro.tasks2do.ui.main.main.FragmentMain
-import kotlinx.android.synthetic.main.bottomsheetdialog_lists.*
+import kotlinx.android.synthetic.main.bottomsheetdialog_menu.*
 
 
-class BottomSheetDialogLists : BottomSheetDialogFragment() {
+class BottomSheetDialogMenu : BottomSheetDialogFragment() {
 
     companion object{
-        private lateinit var bottomSheetDialogLists: BottomSheetDialogLists
+        private lateinit var bottomSheetDialogMenu: BottomSheetDialogMenu
 
         fun dismiss(){
-            bottomSheetDialogLists.dismiss()
+            bottomSheetDialogMenu.dismiss()
         }
     }
 
@@ -38,13 +30,27 @@ class BottomSheetDialogLists : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.bottomsheetdialog_lists, container, false)
+        return inflater.inflate(R.layout.bottomsheetdialog_menu, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bottomSheetDialogLists=this
+        if(MainActivity.username!=""){
+            textViewUsername.text = MainActivity.username
+            textViewUsername.visibility = View.VISIBLE
+            textViewNoUsername.visibility = View.GONE
+        }
+
+        textViewUsername.setOnClickListener {
+            toLoginInfo()
+        }
+
+        textViewNoUsername.setOnClickListener {
+            toLoginInfo()
+        }
+
+        bottomSheetDialogMenu=this
 
         textViewCreateList.setOnClickListener {
             FragmentCreateList.lists = lists
@@ -54,6 +60,11 @@ class BottomSheetDialogLists : BottomSheetDialogFragment() {
 
         adapterLists = AdapterLists(requireActivity(), lists)
         recyclerViewLists.adapter = adapterLists
+    }
+
+    fun toLoginInfo(){
+        requireActivity().findNavController(R.id.nav).navigate(R.id.action_fragment_Main_to_fragmentLoginInfo)
+        dismiss()
     }
 
 }

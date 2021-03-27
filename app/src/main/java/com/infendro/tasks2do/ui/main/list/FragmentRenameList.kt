@@ -53,8 +53,8 @@ class FragmentRenameList : Fragment() {
     }
 
     private fun makeValid(title: String){
-        buttonDone.setTextColor(requireActivity().getColor(R.color.colorAccent))
-        buttonDone.setOnClickListener {
+        buttonSave.setTextColor(requireActivity().getColor(R.color.colorAccent))
+        buttonSave.setOnClickListener {
             list.title=title
             MainActivity.save(requireActivity())
             navigateBack()
@@ -62,8 +62,8 @@ class FragmentRenameList : Fragment() {
     }
 
     private fun makeInvalid(){
-        buttonDone.setTextColor(requireActivity().getColor(R.color.invalid))
-        buttonDone.setOnClickListener(null)
+        buttonSave.setTextColor(requireActivity().getColor(R.color.invalid))
+        buttonSave.setOnClickListener(null)
     }
 
     private fun navigateBack(){

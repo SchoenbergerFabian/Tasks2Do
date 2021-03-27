@@ -15,6 +15,8 @@
     <string name="add_time">Add time</string>
     <string name="enter_title">Enter Title</string>
     <string name="create_list">Create new list</string>
+    <string name="login_info">Login information</string>
+    <string name="login_for_cloud_save">Login for cloud saving</string>
     <string name="rename_list">Rename list</string>
     <string name="delete_list">Delete list</string>
 

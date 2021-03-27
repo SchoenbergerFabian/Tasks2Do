@@ -1,20 +1,16 @@
-package com.infendro.tasks2do.ui.main.main.dialogs.lists
+package com.infendro.tasks2do.ui.main.main.dialogs.menu
 
 import android.app.Activity
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Lists
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.ui.main.MainActivity
-import com.infendro.tasks2do.ui.main.main.AdapterList
 import com.infendro.tasks2do.ui.main.main.FragmentMain
 
 class AdapterLists(private val activity: Activity, private val lists: Lists) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -51,7 +47,7 @@ class AdapterLists(private val activity: Activity, private val lists: Lists) : R
                 layout.setOnClickListener {
                     lists.currentList=index
                     FragmentMain.updateUI()
-                    BottomSheetDialogLists.dismiss()
+                    BottomSheetDialogMenu.dismiss()
                 }
             }
         }

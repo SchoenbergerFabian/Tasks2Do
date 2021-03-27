@@ -8,6 +8,32 @@
     android:orientation="vertical"
     android:overScrollMode="never">
 
+    <TextView
+        android:id="@+id/textViewNoUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ic_person"
+        android:drawablePadding="8dp"
+        android:padding="15dp"
+        android:text="@string/login_for_cloud_save"
+        android:textColor="@color/hint"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textViewUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableRight="@drawable/ic_edit"
+        android:drawablePadding="8dp"
+        android:padding="15dp"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLists"
         android:layout_width="match_parent"

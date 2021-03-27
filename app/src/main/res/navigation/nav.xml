@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_fragment_Main_to_fragmentRenameList"
             app:destination="@id/fragmentRenameList" />
+        <action
+            android:id="@+id/action_fragment_Main_to_fragmentLoginInfo"
+            app:destination="@id/fragmentLoginInfo" />
     </fragment>
     <fragment
         android:id="@+id/fragmentDetail"
@@ -43,6 +46,15 @@
         android:label="FragmentRenameList" >
         <action
             android:id="@+id/action_fragmentRenameList_to_fragment_Main"
+            app:destination="@id/fragment_Main" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentLoginInfo"
+        android:name="com.infendro.tasks2do.ui.main.logininfo.FragmentLoginInfo"
+        android:label="fragment_login_info"
+        tools:layout="@layout/fragment_login_info" >
+        <action
+            android:id="@+id/action_fragmentLoginInfo_to_fragment_Main"
             app:destination="@id/fragment_Main" />
     </fragment>
 </navigation>

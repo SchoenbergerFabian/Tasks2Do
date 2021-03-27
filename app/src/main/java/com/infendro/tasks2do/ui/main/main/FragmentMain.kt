@@ -1,20 +1,17 @@
 package com.infendro.tasks2do.ui.main.main
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.ui.main.MainActivity
 import com.infendro.tasks2do.ui.main.main.dialogs.DialogCreate
-import com.infendro.tasks2do.ui.main.main.dialogs.lists.BottomSheetDialogLists
+import com.infendro.tasks2do.ui.main.main.dialogs.menu.BottomSheetDialogMenu
 import com.infendro.tasks2do.ui.main.main.dialogs.more.BottomSheetDialogMore
-import com.infendro.tasks2do.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class FragmentMain : Fragment() {
@@ -92,7 +89,7 @@ class FragmentMain : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home -> {
-                BottomSheetDialogLists()
+                BottomSheetDialogMenu()
                     .show(requireActivity().supportFragmentManager, null)
             }
             R.id.more -> {
