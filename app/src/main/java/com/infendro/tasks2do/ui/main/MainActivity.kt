@@ -17,9 +17,11 @@ import java.io.FileInputStream
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
+    //TODO generalise REST connections?
+    //TODO Kotlin Coroutines
+    //TODO continue as soon as internet is connected again
     //TODO add IDs to List and Task
     //TODO save accordingly for every situation
-    //TODO Kotlin Coroutines
 
     companion object{
         private lateinit var activity : Activity
