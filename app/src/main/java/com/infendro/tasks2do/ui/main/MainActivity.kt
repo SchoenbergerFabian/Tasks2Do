@@ -17,10 +17,9 @@ import java.io.FileInputStream
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    //TODO add login option
     //TODO add IDs to List and Task
     //TODO save accordingly for every situation
-    //TODO AsyncTasks when saving
+    //TODO Kotlin Coroutines
 
     companion object{
         private lateinit var activity : Activity
@@ -29,13 +28,17 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         lateinit var username: String
         lateinit var password: String
 
-        fun changeLoginInfo(username: String, password: String){
+        fun changeLoginInfo(username: String, password: String) : Boolean{
+            if(this.username == username && this.password == password) return false
+
             sharedPreferences.edit()
                 .putString(activity.getString(R.string.username),username).putString(
                 activity.getString(R.string.password),password)
                 .apply()
             this.username = username
             this.password = password
+
+            return true
         }
 
         lateinit var lists : Lists

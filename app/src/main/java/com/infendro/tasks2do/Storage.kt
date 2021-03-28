@@ -72,7 +72,7 @@ class Storage {
         fun loadFromCloud(username: String, password: String) : Lists {
             //TODO
             println("load from cloud")
-            return Lists()
+            return Lists() //temp
         }
 
         fun hasInternetConnection(activity: Activity) : Boolean {

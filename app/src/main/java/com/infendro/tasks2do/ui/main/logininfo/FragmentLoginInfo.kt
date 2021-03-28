@@ -5,16 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.R
+import com.infendro.tasks2do.Register
+import com.infendro.tasks2do.Storage
 import com.infendro.tasks2do.ui.main.MainActivity
-import com.infendro.tasks2do.ui.main.list.FragmentCreateList
-import kotlinx.android.synthetic.main.fragment_create_list.*
 import kotlinx.android.synthetic.main.fragment_login_info.*
 import kotlinx.android.synthetic.main.fragment_login_info.buttonSave
 
-class FragmentLoginInfo : Fragment() {
+class FragmentLoginInfo : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +34,7 @@ class FragmentLoginInfo : Fragment() {
 
         imageButtonBack.setOnClickListener { navigateBack() }
 
-        buttonSave.setOnClickListener {
-            MainActivity.changeLoginInfo(editTextUsername.text.toString(),editTextPassword.text.toString())
-            //TODO register user
-        }
+        buttonSave.setOnClickListener (this)
 
         editTextUsername.doOnTextChanged { text, _, _, _ -> checkValid(text.toString(),editTextPassword.text.toString()) }
         editTextUsername.setText(MainActivity.username)
@@ -54,10 +52,7 @@ class FragmentLoginInfo : Fragment() {
 
     private fun makeValid(username: String, password: String){
         buttonSave.setTextColor(requireActivity().getColor(R.color.colorAccent))
-        buttonSave.setOnClickListener {
-            MainActivity.changeLoginInfo(username, password)
-            navigateBack()
-        }
+        buttonSave.setOnClickListener (this)
     }
 
     private fun makeInvalid(){
@@ -65,7 +60,19 @@ class FragmentLoginInfo : Fragment() {
         buttonSave.setOnClickListener(null)
     }
 
+    override fun onClick(view: View?) {
+        val result = MainActivity.changeLoginInfo(editTextUsername.text.toString(),editTextPassword.text.toString())
+        if(result && Storage.hasInternetConnection(requireActivity())){
+            Register.register(editTextUsername.text.toString(),editTextPassword.text.toString())
+        }else if(!Storage.hasInternetConnection(requireActivity())){
+            Toast.makeText(requireActivity(), "No internet connection",Toast.LENGTH_LONG).show() //TODO
+        }
+
+        navigateBack()
+    }
+
     private fun navigateBack(){
         findNavController().navigate(R.id.action_fragmentLoginInfo_to_fragment_Main)
+        requireActivity().currentFocus?.clearFocus()
     }
 }
