@@ -1,47 +1,28 @@
 package com.infendro.tasks2do.ui.main
 
 import android.app.Activity
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.infendro.tasks2do.*
-import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Storage
-import java.io.File
-import java.io.FileInputStream
 
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
+    //TODO definitely change logging in (split in signing in and logging in)
+    //TODO PASSWORD CANNOT BE ""
+    //TODO register -> when code == 400 -> user already exists else -> user was registered (inform user!)
+    //TODO are you sure? when logging out
     //TODO generalise REST connections?
     //TODO Kotlin Coroutines
     //TODO continue as soon as internet is connected again
-    //TODO add IDs to List and Task
     //TODO save accordingly for every situation
 
     companion object{
         private lateinit var activity : Activity
-        private lateinit var sharedPreferences : SharedPreferences
-
-        lateinit var username: String
-        lateinit var password: String
-
-        fun changeLoginInfo(username: String, password: String) : Boolean{
-            if(this.username == username && this.password == password) return false
-
-            sharedPreferences.edit()
-                .putString(activity.getString(R.string.username),username).putString(
-                activity.getString(R.string.password),password)
-                .apply()
-            this.username = username
-            this.password = password
-
-            return true
-        }
 
         lateinit var lists : Lists
 
@@ -52,12 +33,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
     override fun onCreate(savedInstanceState: Bundle?) {
         activity = this
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
-        username = sharedPreferences.getString(getString(R.string.username),"")?:""
-        password = sharedPreferences.getString(getString(R.string.password),"")?:""
+        Account.username = sharedPreferences.getString(getString(R.string.username_key),"")?:""
+        Account.password = sharedPreferences.getString(getString(R.string.password_key),"")?:""
 
-        lists = loadLists(username, password)
+        lists = loadLists(Account.username, Account.password)
 
         changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
 

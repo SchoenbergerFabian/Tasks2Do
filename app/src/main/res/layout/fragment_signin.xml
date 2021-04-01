@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.main.logininfo.FragmentLoginInfo" >
+    tools:context=".ui.main.user.FragmentSignin">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,51 +21,54 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:padding="5dp"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_remove" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:text="@string/login_info"
+            android:text="@string/signin"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/buttonSave"
+            android:id="@+id/buttonSignIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:minWidth="0dp"
             android:minHeight="0dp"
-            android:text="@string/save"
+            android:text="@string/signin"
             android:textAllCaps="false"
             android:textColor="@color/invalid"
             android:textSize="16sp" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:visibility="visible">
+
 
         <EditText
             android:id="@+id/editTextUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/username"
-            android:lines="1" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:lines="1" />
-    </LinearLayout>
+            android:textSize="20sp" />
 
+    </LinearLayout>
 </LinearLayout>

@@ -6,6 +6,8 @@ class List(var title: String, val uncheckedTasks: ArrayList<Task>, val checkedTa
     constructor(title: String) : this(title,ArrayList<Task>(),ArrayList<Task>())
     constructor() : this("",ArrayList<Task>(),ArrayList<Task>())
 
+    var id = -1
+
     fun check(position: Int){
         val task = uncheckedTasks.removeAt(position)
         task.checked=true

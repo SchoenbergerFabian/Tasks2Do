@@ -6,9 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.infendro.tasks2do.Account
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.ui.main.MainActivity
-import com.infendro.tasks2do.ui.main.MainActivity.Companion.changeLoginInfo
 import com.infendro.tasks2do.ui.main.MainActivity.Companion.lists
 import com.infendro.tasks2do.ui.main.list.FragmentCreateList
 import kotlinx.android.synthetic.main.bottomsheetdialog_menu.*
@@ -37,23 +36,16 @@ class BottomSheetDialogMenu : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(MainActivity.username!=""){
-            textViewUsername.text = MainActivity.username
-            layoutUser.visibility = View.VISIBLE
+        if(Account.username!=""){
+            textViewUsername.text = Account.username
+            textViewUsername.visibility = View.VISIBLE
             textViewNoUsername.visibility = View.GONE
-        }
-
-        textViewUsername.setOnClickListener {
-            toLoginInfo()
-        }
-
-        imageButtonLogout.setOnClickListener {
-            changeLoginInfo("","")
-            layoutUser.visibility = View.GONE
+        }else{
+            textViewUsername.visibility = View.GONE
             textViewNoUsername.visibility = View.VISIBLE
         }
 
-        textViewNoUsername.setOnClickListener {
+        layoutUsername.setOnClickListener {
             toLoginInfo()
         }
 
@@ -70,7 +62,7 @@ class BottomSheetDialogMenu : BottomSheetDialogFragment() {
     }
 
     private fun toLoginInfo(){
-        requireActivity().findNavController(R.id.nav).navigate(R.id.action_fragment_Main_to_fragmentLoginInfo)
+        requireActivity().findNavController(R.id.nav).navigate(R.id.action_fragment_Main_to_fragmentUser)
         dismiss()
     }
 

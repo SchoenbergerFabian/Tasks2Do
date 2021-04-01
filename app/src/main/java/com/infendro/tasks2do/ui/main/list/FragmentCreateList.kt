@@ -65,6 +65,7 @@ class FragmentCreateList : Fragment() {
     }
 
     private fun navigateBack(){
+        requireActivity().currentFocus?.clearFocus()
         findNavController().navigate(R.id.action_fragmentCreateList_to_fragment_Main)
     }
 }

@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter
 class Task(var title: String, var details: String?, var dueDate: LocalDate?, var dueTime: LocalTime?, var checked: Boolean) : Serializable {
     constructor() : this("", null, null, null, false)
 
+    var id = -1
+
     fun getDueString(patternDate: String, patternTime: String) : String? {
         return if(dueDate!=null){
             if(dueTime!=null){

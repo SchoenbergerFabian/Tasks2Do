@@ -4,17 +4,18 @@ import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Environment
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonObject
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.InputStreamReader
-import java.io.PrintWriter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.*
+import java.net.HttpURLConnection
+import java.net.URL
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -33,6 +34,29 @@ class Storage {
             printWriter.println(getGson().toJson(lists))
             printWriter.flush()
             printWriter.close()
+        }
+
+        fun post(urlString : String, data: String) : Response {
+            val url = URL(urlString)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.run{
+                doOutput = true
+                requestMethod = "POST"
+                setRequestProperty("Content-Type","application/json")
+                setFixedLengthStreamingMode(data.toByteArray().size)
+            }
+
+            val outputStream = connection.outputStream
+            outputStream.write(data.toByteArray())
+            outputStream.flush()
+            outputStream.close()
+
+            val responseCode = connection.responseCode
+            return  if(responseCode/100==4||responseCode/100==5){
+                Response(connection.errorStream, responseCode)
+            }else{
+                Response(connection.inputStream, responseCode)
+            }
         }
 
         fun addList(list: List){
@@ -65,6 +89,7 @@ class Storage {
             println("remove task on cloud")
         }
 
+
         fun loadFromPhone(activity: Activity) : Lists{
             return getGson().fromJson(InputStreamReader(activity.openFileInput(activity.getString(R.string.filename))), Lists::class.java)
         }
@@ -86,6 +111,8 @@ class Storage {
                 else -> false
             }
         }
+
+
     }
 
     class LocalDateAdapter : TypeAdapter<LocalDate>() {
@@ -132,5 +159,15 @@ class Storage {
             }
         }
 
+    }
+
+    class Response(var response: InputStream, var responseCode: Int){
+        fun codeStartsWith(number: Int) : Boolean {
+            return responseCode/100==number
+        }
+
+        fun close(){
+            response.close()
+        }
     }
 }

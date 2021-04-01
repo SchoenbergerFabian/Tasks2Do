@@ -19,8 +19,8 @@
             android:id="@+id/action_fragment_Main_to_fragmentRenameList"
             app:destination="@id/fragmentRenameList" />
         <action
-            android:id="@+id/action_fragment_Main_to_fragmentLoginInfo"
-            app:destination="@id/fragmentLoginInfo" />
+            android:id="@+id/action_fragment_Main_to_fragmentUser"
+            app:destination="@id/fragmentUser" />
     </fragment>
     <fragment
         android:id="@+id/fragmentDetail"
@@ -49,12 +49,46 @@
             app:destination="@id/fragment_Main" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentLoginInfo"
-        android:name="com.infendro.tasks2do.ui.main.logininfo.FragmentLoginInfo"
-        android:label="fragment_login_info"
-        tools:layout="@layout/fragment_login_info" >
+        android:id="@+id/fragmentUser"
+        android:name="com.infendro.tasks2do.ui.main.user.FragmentUser"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
         <action
-            android:id="@+id/action_fragmentLoginInfo_to_fragment_Main"
+            android:id="@+id/action_fragmentUser_to_fragment_Main"
             app:destination="@id/fragment_Main" />
+        <action
+            android:id="@+id/action_fragmentUser_to_fragmentLogin"
+            app:destination="@id/fragmentLogin" />
+        <action
+            android:id="@+id/action_fragmentUser_to_fragmentChangeUser"
+            app:destination="@id/fragmentChangeUser" />
+        <action
+            android:id="@+id/action_fragmentUser_to_fragmentSignin"
+            app:destination="@id/fragmentSignin" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentLogin"
+        android:name="com.infendro.tasks2do.ui.main.user.FragmentLogin"
+        android:label="FragmentLogin" >
+        <action
+            android:id="@+id/action_fragmentLogin_to_fragmentUser"
+            app:destination="@id/fragmentUser" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentChangeUser"
+        android:name="com.infendro.tasks2do.ui.main.user.FragmentChangeUser"
+        android:label="FragmentChange" >
+        <action
+            android:id="@+id/action_fragmentChangeUser_to_fragmentUser"
+            app:destination="@id/fragmentUser" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSignin"
+        android:name="com.infendro.tasks2do.ui.main.user.FragmentSignin"
+        android:label="fragment_signin"
+        tools:layout="@layout/fragment_signin" >
+        <action
+            android:id="@+id/action_fragmentSignin_to_fragmentUser"
+            app:destination="@id/fragmentUser" />
     </fragment>
 </navigation>
