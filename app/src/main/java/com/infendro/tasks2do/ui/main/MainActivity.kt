@@ -39,23 +39,18 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onCreate(savedInstanceState: Bundle?) {
         activity = this
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        lists = Storage.loadFromPhone(activity)
 
         Account.username = sharedPreferences.getString(getString(R.string.username_key),"")?:""
         Account.password = sharedPreferences.getString(getString(R.string.password_key),"")?:""
 
-        changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+        //load
+        lists = Storage.loadFromPhone(activity)
         if(Account.isLoggedIn()){
             if(hasInternetConnection(this)){
                 GlobalScope.launch(Dispatchers.Main) {
                     val lists = withContext(Dispatchers.IO){
-                        return@withContext Storage.getTodoLists()
+                        return@withContext Storage.getTodoLists(lists.currentList)
                     }
-                    if(Companion.lists.currentList!=-1) lists.currentList = Companion.lists.currentList
                     Companion.lists = lists
                     val model : ViewModelMain by viewModels()
                     model.loadCurrentList() //TODO shared viewmodel?
@@ -64,6 +59,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 //TODO
             }
         }
+
+        changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
     }
 
     override fun onResume() {

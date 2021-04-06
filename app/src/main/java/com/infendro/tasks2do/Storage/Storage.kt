@@ -53,7 +53,7 @@ class Storage {
             return success
         }
 
-        suspend fun getTodoLists() : Lists {
+        suspend fun getTodoLists(oldCurrentList: Int) : Lists {
             val lists = Lists()
 
             val listsResponse = get("http://sickinger-solutions.at/notesserver/todolists.php?username=${Account.username}&password=${Account.password}")
@@ -73,8 +73,10 @@ class Storage {
                 }
             }
 
-            if(lists.lists.size!=0){
+            if(oldCurrentList>=lists.lists.size){
                 lists.currentList=0
+            }else{
+                lists.currentList=oldCurrentList
             }
 
             val todosResponse = get("http://sickinger-solutions.at/notesserver/todo.php?username=${Account.username}&password=${Account.password}")
