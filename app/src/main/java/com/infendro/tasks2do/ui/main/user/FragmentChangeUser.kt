@@ -72,8 +72,8 @@ class FragmentChangeUser : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        GlobalScope.launch {
-            if(hasInternetConnection(requireActivity())){
+        if(hasInternetConnection(requireActivity())){
+            GlobalScope.launch {
                 buttonLogIn.setOnClickListener(null)
                 if(Account.isCorrect(editTextUsername.text.toString(),editTextPassword.text.toString())){
                     Account.changeLoginInfo(requireActivity(),editTextUsername.text.toString(),editTextPassword.text.toString())
@@ -84,10 +84,10 @@ class FragmentChangeUser : Fragment(), View.OnClickListener {
                     Log.println(Log.INFO,"","Failed to log in: wrong information")
                 }
                 setOnClickListener()
-            }else{
-                //TODO feedback
-                Log.println(Log.INFO,"","Failed to log in: no internet connection")
             }
+        }else{
+            //TODO feedback
+            Log.println(Log.INFO,"","Failed to log in: no internet connection")
         }
     }
 

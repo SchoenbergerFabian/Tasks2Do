@@ -3,15 +3,19 @@ package com.infendro.tasks2do.ui.main
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
 import com.infendro.tasks2do.*
 import com.infendro.tasks2do.Storage.Storage
 import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Storage.Connection
 import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
 import com.infendro.tasks2do.ui.main.main.FragmentMain
+import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.coroutines.*
 
 
@@ -45,27 +49,20 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        GlobalScope.launch {
-            val lists = loadLists(Account.username, Account.password)
-            if(lists!=null){
-                Companion.lists = lists
-//                FragmentMain.updateUI()
-            }
-        }
-    }
-
-    private suspend fun loadLists(username: String, password: String) : Lists? {
-        return if(username!=""){ //TODO if password cannot be "" then check as well
+        if(Account.isLoggedIn()){
             if(hasInternetConnection(this)){
-                val lists = Storage.loadFromCloud(username, password)
-                lists.currentList = MainActivity.lists.currentList
-                lists
+                GlobalScope.launch(Dispatchers.Main) {
+                    val lists = withContext(Dispatchers.IO){
+                        return@withContext Storage.getTodoLists()
+                    }
+                    if(Companion.lists.currentList!=-1) lists.currentList = Companion.lists.currentList
+                    Companion.lists = lists
+                    val model : ViewModelMain by viewModels()
+                    model.loadCurrentList() //TODO shared viewmodel?
+                }
             }else{
-                //TODO load as soon as internet is connected, update UI
-                null
+                //TODO
             }
-        }else{
-            null
         }
     }
 

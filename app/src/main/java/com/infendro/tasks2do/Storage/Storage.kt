@@ -73,6 +73,10 @@ class Storage {
                 }
             }
 
+            if(lists.lists.size!=0){
+                lists.currentList=0
+            }
+
             val todosResponse = get("http://sickinger-solutions.at/notesserver/todo.php?username=${Account.username}&password=${Account.password}")
 
             val todosSuccess = listsResponse.codeStartsWith(2)
@@ -184,10 +188,6 @@ class Storage {
             response.close()
 
             return success
-        }
-
-        suspend fun loadFromCloud(username: String, password: String) : Lists {
-            return getTodoLists()
         }
 
         private fun getGson() : Gson {

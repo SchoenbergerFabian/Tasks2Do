@@ -11,10 +11,13 @@ import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.Storage.Account
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Storage.Connection
+import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
 import com.infendro.tasks2do.Storage.Storage
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FragmentLogin : Fragment(), View.OnClickListener {
 
@@ -74,8 +77,8 @@ class FragmentLogin : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        GlobalScope.launch {
-            if(Connection.hasInternetConnection(requireActivity())){
+        if(hasInternetConnection(requireActivity())){
+            GlobalScope.launch {
                 buttonLogIn.setOnClickListener(null)
                 if(Account.isCorrect(editTextUsername.text.toString(),editTextPassword.text.toString())){
                     Account.changeLoginInfo(requireActivity(),editTextUsername.text.toString(),editTextPassword.text.toString())
@@ -86,10 +89,11 @@ class FragmentLogin : Fragment(), View.OnClickListener {
                     Log.println(Log.INFO,"","Failed to log in: wrong information")
                 }
                 setOnClickListener()
-            }else{
-                //TODO feedback
-                Log.println(Log.INFO,"","Failed to log in: no internet connection")
             }
+        }else{
+            //TODO feedback
+            Log.println(Log.INFO,"","Failed to log in: no internet connection")
         }
+
     }
 }
