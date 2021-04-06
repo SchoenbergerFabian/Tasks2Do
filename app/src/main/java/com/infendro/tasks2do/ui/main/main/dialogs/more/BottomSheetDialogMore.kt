@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.ui.main.MainActivity.Companion.lists
 import com.infendro.tasks2do.ui.main.list.FragmentRenameList
 import com.infendro.tasks2do.ui.main.main.FragmentMain
+import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import com.infendro.tasks2do.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.bottomsheetdialog_more.*
 
@@ -47,7 +49,8 @@ class BottomSheetDialogMore : BottomSheetDialogFragment() {
             val currentList = lists.currentList
             if(currentList!=-1){
                 lists.removeList(lists.currentList)
-                FragmentMain.updateUI()
+                val model : ViewModelMain by activityViewModels()
+                model.loadCurrentList()
             }else{
                 //TODO feedback
             }

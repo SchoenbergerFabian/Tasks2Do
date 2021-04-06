@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.infendro.tasks2do.R
+import com.infendro.tasks2do.List
 import com.infendro.tasks2do.ui.main.MainActivity
 import com.infendro.tasks2do.ui.main.main.dialogs.DialogCreate
 import com.infendro.tasks2do.ui.main.main.dialogs.menu.BottomSheetDialogMenu
@@ -23,9 +26,7 @@ class FragmentMain : Fragment() {
         lateinit var recyclerView : RecyclerView
         lateinit var fabCreate : FloatingActionButton
 
-        fun updateUI(){
-            val list = MainActivity.lists.getCurrentList()
-
+        fun updateUI(list: List?){
             if(list!=null){
 
                 adapter = AdapterList(
@@ -78,7 +79,12 @@ class FragmentMain : Fragment() {
         Companion.recyclerView=recyclerView
         Companion.fabCreate=fabCreate
 
-        updateUI()
+        val model : ViewModelMain by activityViewModels()
+
+        model.loadCurrentList()
+        model.list.observe(viewLifecycleOwner, { list ->
+            updateUI(list)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -5,21 +5,22 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
 import com.infendro.tasks2do.*
-import com.infendro.tasks2do.Storage
+import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
+import com.infendro.tasks2do.ui.main.main.FragmentMain
+import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    //TODO definitely change logging in (split in signing in and logging in)
-    //TODO PASSWORD CANNOT BE ""
-    //TODO register -> when code == 400 -> user already exists else -> user was registered (inform user!)
-    //TODO are you sure? when logging out
-    //TODO generalise REST connections?
-    //TODO Kotlin Coroutines
-    //TODO continue as soon as internet is connected again
     //TODO save accordingly for every situation
+    //TODO how to handle loading/saving when logging in/logging out/signing in
+    //TODO are you sure? when logging out
+    //TODO continue as soon as internet is connected again
 
     companion object{
         private lateinit var activity : Activity
@@ -34,30 +35,37 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onCreate(savedInstanceState: Bundle?) {
         activity = this
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        lists = Storage.loadFromPhone(activity)
 
         Account.username = sharedPreferences.getString(getString(R.string.username_key),"")?:""
         Account.password = sharedPreferences.getString(getString(R.string.password_key),"")?:""
-
-        lists = loadLists(Account.username, Account.password)
 
         changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        GlobalScope.launch {
+            val lists = loadLists(Account.username, Account.password)
+            if(lists!=null){
+                Companion.lists = lists
+//                FragmentMain.updateUI()
+            }
+        }
     }
 
-    private fun loadLists(username: String, password: String) : Lists {
+    private suspend fun loadLists(username: String, password: String) : Lists? {
         return if(username!=""){ //TODO if password cannot be "" then check as well
-            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(getString(R.string.first_load),false).apply()
-            if(Storage.hasInternetConnection(this)){
-                //TODO load in async task so the application doesn't stop?
-                Storage.loadFromCloud(username, password) //TODO watch out for errors!
+            if(hasInternetConnection(this)){
+                val lists = Storage.loadFromCloud(username, password)
+                lists.currentList = MainActivity.lists.currentList
+                lists
             }else{
-                //TODO launch async task to load as soon as internet is connected, update UI somehow?
-                Storage.loadFromPhone(this)
+                //TODO load as soon as internet is connected, update UI
+                null
             }
         }else{
-            Storage.loadFromPhone(this)
+            null
         }
     }
 

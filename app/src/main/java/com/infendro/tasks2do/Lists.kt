@@ -32,4 +32,13 @@ class Lists(val lists: ArrayList<List>, var currentList: Int) {
             null
         }
     }
+
+    fun getList(id: Int) : List? {
+        lists.forEach {
+            if(it.id==id){
+                return it
+            }
+        }
+        return null
+    }
 }
