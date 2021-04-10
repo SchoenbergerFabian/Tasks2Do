@@ -36,7 +36,7 @@ class Storage {
 
             val params = JsonObject()
             params.addProperty("name", list.title)
-            params.addProperty("additionalData", "x")
+            params.addProperty("additionalData", "_")
             val response = post(
                 "http://sickinger-solutions.at/notesserver/todolists.php?username=${Account.username}&password=${Account.password}",
                 params.toString()
@@ -73,10 +73,16 @@ class Storage {
                 }
             }
 
-            if(oldCurrentList>=lists.lists.size){
-                lists.currentList=0
-            }else{
-                lists.currentList=oldCurrentList
+            lists.currentList = when {
+                lists.lists.size==0 -> {
+                    -1
+                }
+                oldCurrentList>=lists.lists.size -> {
+                    0
+                }
+                else -> {
+                    oldCurrentList
+                }
             }
 
             val todosResponse = get("http://sickinger-solutions.at/notesserver/todo.php?username=${Account.username}&password=${Account.password}")
@@ -91,16 +97,19 @@ class Storage {
                     val task = Task()
                     task.id = todoResp.getString("id").toInt()
                     task.title = todoResp.getString("title")
-                    task.details = todoResp.getString("description")
+                    val details = todoResp.getString("description")
+                    task.details = if(details=="_") null else details
                     val datetimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                    task.dueDate = LocalDate.parse(todoResp.getString("dueDate"),datetimeFormat)
+                    val splitDatetime = todoResp.getString("dueDate").split(" ")
+                    task.dueDate = if(splitDatetime[0]=="1970-01-01") null else LocalDate.parse(todoResp.getString("dueDate"),datetimeFormat)
+                    task.dueTime = if(splitDatetime[1]=="00:00:00") null else LocalTime.parse(todoResp.getString("dueDate"),datetimeFormat)
                     task.checked = todoResp.getString("state")=="x"
 
                     val list = lists.getList(todoResp.getString("todoListId").toInt())
                     if(task.checked){
-                        list?.checkedTasks?.add(task)
+                        list?.checkedTasks?.add(0,task)
                     }else{
-                        list?.uncheckedTasks?.add(task)
+                        list?.uncheckedTasks?.add(0,task)
                     }
                 }
             }
@@ -137,13 +146,17 @@ class Storage {
         suspend fun addTask(list: List, task: Task) : Boolean {
 
             val params = JsonObject()
-            params.addProperty("todoListId", list.id)
-            params.addProperty("title", task.title)
-            params.addProperty("description", task.details)
+            params.addProperty("todoListId", "${list.id}")
+            params.addProperty("title", if(task.title!="") task.title else "_")
+            params.addProperty("description", task.details?:"_")
             val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val date = if(task.dueDate!=null) task.dueDate?.format(dateFormat) else "1970-01-01"
             val timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss")
-            params.addProperty("dueDate", "${task.dueDate?.format(dateFormat)} ${task.dueTime?.format(timeFormat)}")
-            params.addProperty("state", if(task.checked) "x" else "")
+            val time = if(task.dueTime!=null) task.dueTime?.format(timeFormat) else "00:00:00"
+            params.addProperty("dueDate", "$date $time")
+            params.addProperty("state", if(task.checked) "x" else "_")
+            params.addProperty("additionalData","_")
+
             val response = post(
                 "http://sickinger-solutions.at/notesserver/todo.php?username=${Account.username}&password=${Account.password}",
                 params.toString()
@@ -161,15 +174,19 @@ class Storage {
         }
 
         suspend fun editTask(list: List, task: Task) : Boolean {
-            val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            val timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss")
 
             val params = JsonObject()
-            params.addProperty("todoListId", list.id)
-            params.addProperty("title", task.title)
-            params.addProperty("description", task.details)
-            params.addProperty("dueDate", "${task.dueDate?.format(dateFormat)} ${task.dueTime?.format(timeFormat)}")
-            params.addProperty("state", if(task.checked) "x" else "o")
+            params.addProperty("todoListId", "${list.id}")
+            params.addProperty("title", if(task.title!="") task.title else "_")
+            params.addProperty("description", task.details?:"_")
+            val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val date = if(task.dueDate!=null) task.dueDate?.format(dateFormat) else "1970-01-01"
+            val timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss")
+            val time = if(task.dueTime!=null) task.dueTime?.format(timeFormat) else "00:00:00"
+            params.addProperty("dueDate", "$date $time")
+            params.addProperty("state", if(task.checked) "x" else "_")
+            params.addProperty("additionalData","_")
+
             val response = put(
                 "http://sickinger-solutions.at/notesserver/todo.php?username=${Account.username}&password=${Account.password}",
                 params.toString()

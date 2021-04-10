@@ -11,8 +11,14 @@ import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
 import kotlinx.android.synthetic.main.fragment_detail.*
 import com.infendro.tasks2do.List
+import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Storage.Connection
+import com.infendro.tasks2do.Storage.Storage
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 import com.infendro.tasks2do.ui.main.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FragmentDetail : Fragment() {
     private var list: List? = null
@@ -50,6 +56,15 @@ class FragmentDetail : Fragment() {
                 }
                 false -> {
                     list?.uncheckedTasks?.removeAt(index)
+                }
+            }
+            if(Account.isLoggedIn()){
+                if(Connection.hasInternetConnection(requireActivity())){
+                    GlobalScope.launch(Dispatchers.IO) {
+                        Storage.removeTask(task!!)
+                    }
+                }else{
+                    //TODO
                 }
             }
             navigateBack()

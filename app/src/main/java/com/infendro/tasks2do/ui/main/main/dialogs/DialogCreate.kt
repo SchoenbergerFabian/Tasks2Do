@@ -9,11 +9,17 @@ import android.view.WindowManager
 import androidx.core.widget.doOnTextChanged
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.R
+import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Storage.Connection
+import com.infendro.tasks2do.Storage.Storage
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 import com.infendro.tasks2do.ui.main.MainActivity
 import com.infendro.tasks2do.ui.main.main.FragmentMain
 import kotlinx.android.synthetic.main.dialog_create.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class DialogCreate(private val activity: Activity, private val list: List) : Dialog(activity,R.style.Dialog) {
@@ -34,10 +40,20 @@ class DialogCreate(private val activity: Activity, private val list: List) : Dia
                 buttonSave.setTextColor(activity.getColor(R.color.colorAccent))
                 buttonSave.setOnClickListener {
                     list.uncheckedTasks.add(0, task)
+                    MainActivity.save(activity)
+                    if(Account.isLoggedIn()){
+                        if(Connection.hasInternetConnection(activity)){
+                            GlobalScope.launch(Dispatchers.IO) {
+                                Storage.addTask(list, task)
+                            }
+                        }else{
+                            //TODO
+                        }
+
+                    }
                     FragmentMain.adapter.notifyItemInserted(
                         FragmentMain.adapter.getAdapterPositionOfUncheckedIndex0())
                     FragmentMain.recyclerView.scrollToPosition(0)
-                    MainActivity.save(activity)
                     dismiss()
                 }
             }

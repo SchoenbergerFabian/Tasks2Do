@@ -31,7 +31,7 @@ class Account {
             val params = JsonObject()
             params.addProperty("username", username)
             params.addProperty("password", password)
-            params.addProperty("name", "x")
+            params.addProperty("name", "_")
             val response = post(
                 "http://sickinger-solutions.at/notesserver/register.php",
                 params.toString()

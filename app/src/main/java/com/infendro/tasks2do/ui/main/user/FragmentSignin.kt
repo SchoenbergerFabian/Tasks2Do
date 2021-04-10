@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.Storage.Account
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
 import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.ui.main.MainActivity
+import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.android.synthetic.main.fragment_login.editTextPassword
 import kotlinx.android.synthetic.main.fragment_login.editTextUsername
 import kotlinx.android.synthetic.main.fragment_login.imageButtonBack
@@ -77,6 +80,8 @@ class FragmentSignin : Fragment(), View.OnClickListener {
                 buttonSignIn.setOnClickListener(null)
                 if (Account.signIn(editTextUsername.text.toString(), editTextPassword.text.toString())) {
                     Account.changeLoginInfo(requireActivity(), editTextUsername.text.toString(), editTextPassword.text.toString())
+                    //TODO add all lists and todos to cloud
+
                     Log.println(Log.INFO, "", "Successfully signed in")
                     navigateBack()
                 } else {

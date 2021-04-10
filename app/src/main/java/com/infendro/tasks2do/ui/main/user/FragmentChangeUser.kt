@@ -7,14 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.Storage.Account
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
 import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.ui.main.MainActivity
+import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FragmentChangeUser : Fragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,10 +79,18 @@ class FragmentChangeUser : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         if(hasInternetConnection(requireActivity())){
-            GlobalScope.launch {
-                buttonLogIn.setOnClickListener(null)
+            buttonLogIn.setOnClickListener(null)
+            GlobalScope.launch(Dispatchers.IO) {
                 if(Account.isCorrect(editTextUsername.text.toString(),editTextPassword.text.toString())){
                     Account.changeLoginInfo(requireActivity(),editTextUsername.text.toString(),editTextPassword.text.toString())
+
+                    MainActivity.lists = Storage.getTodoLists(0)
+
+                    withContext(Dispatchers.Main){
+                        val model : ViewModelMain by activityViewModels()
+                        model.loadCurrentList()
+                    }
+
                     Log.println(Log.INFO,"","Successfully logged in")
                     navigateBack()
                 }else{

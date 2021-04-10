@@ -9,12 +9,19 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.infendro.tasks2do.R
+import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Storage.Connection
+import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.ui.main.MainActivity
 import com.infendro.tasks2do.ui.main.MainActivity.Companion.lists
 import com.infendro.tasks2do.ui.main.list.FragmentRenameList
 import com.infendro.tasks2do.ui.main.main.FragmentMain
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import com.infendro.tasks2do.ui.settings.SettingsActivity
 import kotlinx.android.synthetic.main.bottomsheetdialog_more.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class BottomSheetDialogMore : BottomSheetDialogFragment() {
@@ -46,9 +53,19 @@ class BottomSheetDialogMore : BottomSheetDialogFragment() {
         }
 
         textViewDelete.setOnClickListener {
-            val currentList = lists.currentList
-            if(currentList!=-1){
+            if(lists.currentList!=-1){
+                val currentList = lists.getCurrentList()
                 lists.removeList(lists.currentList)
+                MainActivity.save(requireActivity())
+                if(Account.isLoggedIn()){
+                    if(Connection.hasInternetConnection(requireActivity())){
+                        GlobalScope.launch(Dispatchers.IO) {
+                            Storage.removeList(currentList!!)
+                        }
+                    }else{
+                        //TODO
+                    }
+                }
                 val model : ViewModelMain by activityViewModels()
                 model.loadCurrentList()
             }else{

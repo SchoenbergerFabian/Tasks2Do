@@ -10,8 +10,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.List
+import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Storage.Connection
+import com.infendro.tasks2do.Storage.Storage
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.ui.main.MainActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AdapterList(private val activity: Activity, private val list: List) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -218,6 +224,15 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                     true -> {
                         list.uncheck(adapter.getCheckedIndex(adapterPosition))
                         MainActivity.save(activity)
+                        if(Account.isLoggedIn()){
+                            if(Connection.hasInternetConnection(activity)){
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    Storage.editTask(list, task)
+                                }
+                            }else {
+                                //TODO
+                            }
+                        }
 
                         //update image
                         setCheckedImage(task)
@@ -237,6 +252,16 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                     false -> {
                         list.check(adapterPosition-1)
                         MainActivity.save(activity)
+                        if(Account.isLoggedIn()){
+                            if(Connection.hasInternetConnection(activity)){
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    Storage.editTask(list, task)
+                                }
+                            }else {
+                                //TODO
+                            }
+                        }
+
                         checkedTasks=true
 
                         //update image

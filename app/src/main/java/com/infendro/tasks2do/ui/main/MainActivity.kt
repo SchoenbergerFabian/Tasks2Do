@@ -17,6 +17,7 @@ import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
 import com.infendro.tasks2do.ui.main.main.FragmentMain
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.coroutines.*
+import java.io.FileNotFoundException
 
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -44,7 +45,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         Account.password = sharedPreferences.getString(getString(R.string.password_key),"")?:""
 
         //load
-        lists = Storage.loadFromPhone(activity)
+        lists = try {
+            Storage.loadFromPhone(activity)
+        }catch(ex: FileNotFoundException){
+            Lists()
+        }
         if(Account.isLoggedIn()){
             if(hasInternetConnection(this)){
                 GlobalScope.launch(Dispatchers.Main) {
@@ -52,6 +57,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                         return@withContext Storage.getTodoLists(lists.currentList)
                     }
                     Companion.lists = lists
+                    save(activity)
                     val model : ViewModelMain by viewModels()
                     model.loadCurrentList() //TODO shared viewmodel?
                 }
