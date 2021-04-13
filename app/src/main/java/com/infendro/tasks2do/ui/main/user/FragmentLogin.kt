@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
@@ -98,13 +99,13 @@ class FragmentLogin : Fragment(), View.OnClickListener {
                     Log.println(Log.INFO,"","Successfully logged in")
                     navigateBack()
                 }else{
-                    //TODO feedback
+                    Toast.makeText(requireActivity(), "Incorrect username or password", Toast.LENGTH_LONG).show()
                     Log.println(Log.INFO,"","Failed to log in: wrong information")
                 }
                 setOnClickListener()
             }
         }else{
-            //TODO feedback
+            Toast.makeText(requireActivity(), "No internet connection", Toast.LENGTH_LONG).show()
             Log.println(Log.INFO,"","Failed to log in: no internet connection")
         }
 

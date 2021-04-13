@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -88,12 +89,12 @@ class FragmentSignin : Fragment(), View.OnClickListener {
                     Log.println(Log.INFO, "", "Successfully signed in")
                     navigateBack()
                 } else {
-                    //TODO feedback
+                    Toast.makeText(requireActivity(), "user already exists", Toast.LENGTH_LONG).show()
                     Log.println(Log.INFO, "", "Failed to sign in: user already exists")
                 }
                 setOnClickListener()
             } else {
-                //TODO feedback
+                Toast.makeText(requireActivity(), "No internet connection", Toast.LENGTH_LONG).show()
                 Log.println(Log.INFO, "", "Failed to sign in: no internet connection")
             }
         }
