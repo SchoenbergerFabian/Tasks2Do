@@ -9,9 +9,10 @@ import android.view.WindowManager
 import androidx.core.widget.doOnTextChanged
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Storage.Account
-import com.infendro.tasks2do.Storage.Connection
-import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.Connection.Account
+import com.infendro.tasks2do.Connection.Connection
+import com.infendro.tasks2do.Connection.Location
+import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 import com.infendro.tasks2do.ui.main.MainActivity
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.dialog_create.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class DialogCreate(private val activity: Activity, private val list: List) : Dialog(activity,R.style.Dialog) {
@@ -39,22 +41,34 @@ class DialogCreate(private val activity: Activity, private val list: List) : Dia
             }else{
                 buttonSave.setTextColor(activity.getColor(R.color.colorAccent))
                 buttonSave.setOnClickListener {
-                    list.uncheckedTasks.add(0, task)
-                    MainActivity.save(activity)
-                    if(Account.isLoggedIn()){
-                        if(Connection.hasInternetConnection(activity)){
-                            GlobalScope.launch(Dispatchers.IO) {
-                                Storage.addTask(list, task)
-                            }
-                        }else{
-                            //TODO
+
+                    GlobalScope.launch(Dispatchers.Main) {
+                        withContext(Dispatchers.IO){
+                            task.locationInfo = Location.getLastKnownLocation(activity)
                         }
 
-                    }
-                    FragmentMain.adapter.notifyItemInserted(
+                        list.uncheckedTasks.add(0, task)
+
+                        FragmentMain.adapter.notifyItemInserted(
                         FragmentMain.adapter.getAdapterPositionOfUncheckedIndex0())
-                    FragmentMain.recyclerView.scrollToPosition(0)
-                    dismiss()
+                        FragmentMain.recyclerView.scrollToPosition(0)
+
+                        MainActivity.save(activity)
+
+                        if(Account.isLoggedIn()){
+                            if(Connection.hasInternetConnection(activity)){
+                                withContext(Dispatchers.IO){
+                                    Storage.addTask(list, task)
+                                }
+                            }else{
+                                //TODO
+                            }
+
+                        }
+
+                        dismiss()
+                    }
+
                 }
             }
             task.title = text.toString()

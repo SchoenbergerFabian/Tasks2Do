@@ -1,4 +1,4 @@
-package com.infendro.tasks2do.Storage
+package com.infendro.tasks2do.Connection
 
 import android.app.Activity
 import android.content.Context
@@ -10,14 +10,12 @@ import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
 import com.google.gson.stream.JsonWriter
+import com.infendro.tasks2do.*
 import com.infendro.tasks2do.List
-import com.infendro.tasks2do.Lists
-import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Storage.Connection.Companion.post
-import com.infendro.tasks2do.Storage.Connection.Companion.get
-import com.infendro.tasks2do.Storage.Connection.Companion.put
-import com.infendro.tasks2do.Storage.Connection.Companion.delete
-import com.infendro.tasks2do.Task
+import com.infendro.tasks2do.Connection.Connection.Companion.post
+import com.infendro.tasks2do.Connection.Connection.Companion.get
+import com.infendro.tasks2do.Connection.Connection.Companion.put
+import com.infendro.tasks2do.Connection.Connection.Companion.delete
 import com.infendro.tasks2do.ui.main.MainActivity
 import org.json.JSONArray
 import org.json.JSONObject
@@ -125,6 +123,9 @@ class Storage {
                     task.dueTime = if(splitDatetime[1]=="00:00:00") null else LocalTime.parse(todoResp.getString("dueDate"),datetimeFormat)
                     task.checked = todoResp.getString("state")=="x"
 
+                    val locationInfo = todoResp.getString("additionalData")
+                    task.locationInfo = if(locationInfo=="null"||locationInfo=="_") null else getGson().fromJson(locationInfo, LocationInfo::class.java)
+
                     val list = lists.getList(todoResp.getString("todoListId").toInt())
                     if(task.checked){
                         list?.checkedTasks?.add(0,task)
@@ -175,7 +176,8 @@ class Storage {
             val time = if(task.dueTime!=null) task.dueTime?.format(timeFormat) else "00:00:00"
             params.addProperty("dueDate", "$date $time")
             params.addProperty("state", if(task.checked) "x" else "_")
-            params.addProperty("additionalData","_")
+
+            params.addProperty("additionalData", getGson().toJson(task.locationInfo))
 
             val response = post(
                 "http://sickinger-solutions.at/notesserver/todo.php?username=${Account.username}&password=${Account.password}",
@@ -205,10 +207,11 @@ class Storage {
             val time = if(task.dueTime!=null) task.dueTime?.format(timeFormat) else "00:00:00"
             params.addProperty("dueDate", "$date $time")
             params.addProperty("state", if(task.checked) "x" else "_")
-            params.addProperty("additionalData","_")
+
+            params.addProperty("additionalData", getGson().toJson(task.locationInfo))
 
             val response = put(
-                "http://sickinger-solutions.at/notesserver/todo.php?username=${Account.username}&password=${Account.password}",
+                "http://sickinger-solutions.at/notesserver/todo.php?id=${task.id}&username=${Account.username}&password=${Account.password}",
                 params.toString()
             )
 

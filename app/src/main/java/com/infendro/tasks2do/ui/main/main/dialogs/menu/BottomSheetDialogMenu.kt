@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Connection.Account
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.ui.main.MainActivity.Companion.lists
 import com.infendro.tasks2do.ui.main.list.FragmentCreateList

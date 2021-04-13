@@ -1,11 +1,11 @@
-package com.infendro.tasks2do.Storage
+package com.infendro.tasks2do.Connection
 
 import android.app.Activity
 import androidx.preference.PreferenceManager
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Storage.Connection.Companion.post
+import com.infendro.tasks2do.Connection.Connection.Companion.post
 import java.io.InputStreamReader
 
 class Account {

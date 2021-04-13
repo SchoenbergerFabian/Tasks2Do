@@ -2,7 +2,6 @@ package com.infendro.tasks2do.ui.main.list
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,10 @@ import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.Lists
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Storage.Account
-import com.infendro.tasks2do.Storage.Connection
-import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.Connection.Account
+import com.infendro.tasks2do.Connection.Connection
+import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.ui.main.MainActivity
-import com.infendro.tasks2do.ui.main.main.FragmentMain
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.android.synthetic.main.fragment_create_list.*
 import kotlinx.coroutines.Dispatchers

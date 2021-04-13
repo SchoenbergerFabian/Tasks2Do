@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Connection.Account
 import com.infendro.tasks2do.R
 import kotlinx.android.synthetic.main.fragment_user.*
 

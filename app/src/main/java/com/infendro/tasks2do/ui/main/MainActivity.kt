@@ -1,20 +1,19 @@
 package com.infendro.tasks2do.ui.main
 
+import android.Manifest
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.ViewModel
-import androidx.navigation.findNavController
 import androidx.preference.PreferenceManager
 import com.infendro.tasks2do.*
-import com.infendro.tasks2do.Storage.Storage
-import com.infendro.tasks2do.Storage.Account
-import com.infendro.tasks2do.Storage.Connection
-import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
-import com.infendro.tasks2do.ui.main.main.FragmentMain
+import com.infendro.tasks2do.Connection.Storage
+import com.infendro.tasks2do.Connection.Account
+import com.infendro.tasks2do.Connection.Connection.Companion.hasInternetConnection
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.coroutines.*
 import java.io.FileNotFoundException
@@ -22,8 +21,6 @@ import java.io.FileNotFoundException
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
-    //TODO save accordingly for every situation
-    //TODO how to handle loading/saving when logging in/logging out/signing in
     //TODO are you sure? when logging out
     //TODO continue as soon as internet is connected again
 
@@ -59,7 +56,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     Companion.lists = lists
                     save(activity)
                     val model : ViewModelMain by viewModels()
-                    model.loadCurrentList() //TODO shared viewmodel?
+                    model.loadCurrentList()
                 }
             }else{
                 //TODO
@@ -70,6 +67,15 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if(sharedPreferences.getBoolean("first_time", true)){
+            registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted: Boolean ->
+                if(!isGranted) {
+                    Toast.makeText(this, "You can grant location permissions in your settings later!", Toast.LENGTH_LONG).show() //TODO
+                }
+            }.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            sharedPreferences.edit().putBoolean("first_time", false).apply()
+        }
     }
 
     override fun onResume() {

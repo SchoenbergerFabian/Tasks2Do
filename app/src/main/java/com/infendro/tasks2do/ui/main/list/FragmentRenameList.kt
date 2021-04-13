@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.List
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Storage.Account
-import com.infendro.tasks2do.Storage.Connection
-import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.Connection.Account
+import com.infendro.tasks2do.Connection.Connection
+import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_create_list.*
 import kotlinx.coroutines.Dispatchers

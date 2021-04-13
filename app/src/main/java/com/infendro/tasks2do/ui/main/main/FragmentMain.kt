@@ -6,7 +6,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.infendro.tasks2do.R
@@ -82,9 +82,9 @@ class FragmentMain : Fragment() {
         val model : ViewModelMain by activityViewModels()
 
         model.loadCurrentList()
-        model.list.observe(viewLifecycleOwner, { list ->
+        model.list.observe(viewLifecycleOwner) { list ->
             updateUI(list)
-        })
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

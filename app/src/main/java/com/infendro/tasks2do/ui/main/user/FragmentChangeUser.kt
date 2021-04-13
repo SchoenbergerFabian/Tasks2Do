@@ -9,12 +9,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Connection.Account
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
-import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.Connection.Connection.Companion.hasInternetConnection
+import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.ui.main.MainActivity
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -90,10 +89,10 @@ class FragmentChangeUser : Fragment(), View.OnClickListener {
                     withContext(Dispatchers.Main){
                         val model : ViewModelMain by activityViewModels()
                         model.loadCurrentList()
-                    }
 
-                    Log.println(Log.INFO,"","Successfully logged in")
-                    navigateBack()
+                        Log.println(Log.INFO,"","Successfully logged in")
+                        navigateBack()
+                    }
                 }else{
                     Toast.makeText(requireActivity(), "Incorrect username or password", Toast.LENGTH_LONG).show()
                     Log.println(Log.INFO,"","Failed to log in: wrong information")

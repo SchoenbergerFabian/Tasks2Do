@@ -57,6 +57,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+
             <EditText
                 android:id="@+id/editTextTitle"
                 android:layout_width="match_parent"
@@ -116,6 +118,25 @@
                     android:src="@drawable/ic_remove"
                     android:visibility="gone" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location_of_last_edit" />
+
+                <TextView
+                    android:id="@+id/textViewLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_available" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

@@ -8,14 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.infendro.tasks2do.Storage.Account
+import com.infendro.tasks2do.Connection.Account
 import com.infendro.tasks2do.R
-import com.infendro.tasks2do.Storage.Connection.Companion.hasInternetConnection
-import com.infendro.tasks2do.Storage.Storage
+import com.infendro.tasks2do.Connection.Connection.Companion.hasInternetConnection
+import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.ui.main.MainActivity
-import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.android.synthetic.main.fragment_login.editTextPassword
 import kotlinx.android.synthetic.main.fragment_login.editTextUsername
 import kotlinx.android.synthetic.main.fragment_login.imageButtonBack

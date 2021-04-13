@@ -1,4 +1,4 @@
-package com.infendro.tasks2do.Storage
+package com.infendro.tasks2do.Connection
 
 import android.app.Activity
 import android.content.Context
