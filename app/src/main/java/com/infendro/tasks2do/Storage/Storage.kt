@@ -2,6 +2,7 @@ package com.infendro.tasks2do.Storage
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
@@ -27,6 +28,25 @@ import java.time.format.DateTimeFormatter
 
 class Storage {
     companion object{
+
+        suspend fun addAll(lists: Lists) {
+            lists.lists.forEach { list ->
+                if(addList(list)){
+                    list.uncheckedTasks.forEach { uncheckedTask ->
+                        if(!addTask(list, uncheckedTask)){
+                            Log.println(Log.ERROR,"","Task could not be uploaded!")
+                        }
+                    }
+                    list.checkedTasks.forEach { checkedTask ->
+                        if(!addTask(list, checkedTask)){
+                            Log.println(Log.ERROR,"","Task could not be uploaded!")
+                        }
+                    }
+                }else{
+                    Log.println(Log.ERROR,"","List could not be uploaded!")
+                }
+            }
+        }
 
         suspend fun addList(list: List) : Boolean {
             val currentList = MainActivity.lists.getCurrentList()

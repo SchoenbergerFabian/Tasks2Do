@@ -80,7 +80,10 @@ class FragmentSignin : Fragment(), View.OnClickListener {
                 buttonSignIn.setOnClickListener(null)
                 if (Account.signIn(editTextUsername.text.toString(), editTextPassword.text.toString())) {
                     Account.changeLoginInfo(requireActivity(), editTextUsername.text.toString(), editTextPassword.text.toString())
-                    //TODO add all lists and todos to cloud
+
+                    GlobalScope.launch {
+                        Storage.addAll(MainActivity.lists)
+                    }
 
                     Log.println(Log.INFO, "", "Successfully signed in")
                     navigateBack()

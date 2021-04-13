@@ -83,8 +83,8 @@ class FragmentLogin : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         if(hasInternetConnection(requireActivity())){
+            buttonLogIn.setOnClickListener(null)
             GlobalScope.launch {
-                buttonLogIn.setOnClickListener(null)
                 if(Account.isCorrect(editTextUsername.text.toString(),editTextPassword.text.toString())){
                     Account.changeLoginInfo(requireActivity(),editTextUsername.text.toString(),editTextPassword.text.toString())
 
