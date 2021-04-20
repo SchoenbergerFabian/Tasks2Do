@@ -17,6 +17,10 @@ import com.infendro.tasks2do.ui.main.main.dialogs.DialogCreate
 import com.infendro.tasks2do.ui.main.main.dialogs.menu.BottomSheetDialogMenu
 import com.infendro.tasks2do.ui.main.main.dialogs.more.BottomSheetDialogMore
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FragmentMain : Fragment() {
 
@@ -80,11 +84,16 @@ class FragmentMain : Fragment() {
         Companion.recyclerView=recyclerView
         Companion.fabCreate=fabCreate
 
-        val model : ViewModelMain by activityViewModels()
-
-        model.loadCurrentList()
-        model.list.observe(viewLifecycleOwner) { list ->
-            updateUI(list)
+        GlobalScope.launch(Dispatchers.IO) {
+            MainActivity.lists = Storage.getTodoLists(MainActivity.lists.currentList)
+            MainActivity.save(requireActivity())
+            withContext(Dispatchers.Main){
+                val model : ViewModelMain by activityViewModels()
+                model.loadCurrentList()
+                model.list.observe(viewLifecycleOwner) { list ->
+                    updateUI(list)
+                }
+            }
         }
     }
 
