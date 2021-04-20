@@ -13,6 +13,7 @@ import com.infendro.tasks2do.Connection.Account
 import com.infendro.tasks2do.Connection.Connection
 import com.infendro.tasks2do.Connection.Location
 import com.infendro.tasks2do.Connection.Storage
+import com.infendro.tasks2do.Notification.Notification
 import com.infendro.tasks2do.Task
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 import com.infendro.tasks2do.ui.main.MainActivity
@@ -53,19 +54,19 @@ class DialogCreate(private val activity: Activity, private val list: List) : Dia
                         FragmentMain.adapter.getAdapterPositionOfUncheckedIndex0())
                         FragmentMain.recyclerView.scrollToPosition(0)
 
-                        MainActivity.save(activity)
-
                         if(Account.isLoggedIn()){
                             if(Connection.hasInternetConnection(activity)){
                                 withContext(Dispatchers.IO){
                                     Storage.addTask(list, task)
                                 }
+                                Notification.notifyUploaded(activity, list, task)
                             }else{
                                 //TODO
                             }
 
                         }
 
+                        MainActivity.save(activity)
                         dismiss()
                     }
 

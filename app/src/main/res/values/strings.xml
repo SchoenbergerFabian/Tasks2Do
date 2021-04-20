@@ -4,6 +4,9 @@
     <string name="pattern_date">dd.MM.yyyy</string>
     <string name="pattern_time">HH:mm</string>
 
+    <string name="channel_name">Tasks2Do</string>
+    <string name="channel_description">All your Tasks in one place!</string>
+
     <string name="completed">COMPLETED</string>
 
     <string name="save">Save</string>
@@ -42,6 +45,9 @@
     <string name="lightmode_val">light</string>
     <string name="system">System default</string>
     <string name="system_val">system</string>
+
+    <string name="notifications">Tasks2Do</string>
+    <string name="notifications_key">All your Tasks in one place!</string>
 
     <string name="filename">Tasks2Do.save</string>
     <string name="first_load">first_load</string>

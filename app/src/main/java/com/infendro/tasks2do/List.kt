@@ -8,15 +8,46 @@ class List(var title: String, val uncheckedTasks: ArrayList<Task>, val checkedTa
 
     var id = -1
 
-    fun check(position: Int){
-        val task = uncheckedTasks.removeAt(position)
+    fun getTask(id: Int) : Task? {
+        uncheckedTasks.forEach {
+            if(it.id==id){
+                return it
+            }
+        }
+        checkedTasks.forEach {
+            if(it.id==id){
+                return it
+            }
+        }
+        return null
+    }
+
+    fun check(task: Task){
+        uncheckedTasks.remove(task)
         task.checked=true
         checkedTasks.add(0,task)
     }
 
-    fun uncheck(position: Int){
-        val task = checkedTasks.removeAt(position)
+    fun uncheck(task: Task){
+        checkedTasks.remove(task)
         task.checked=false
         uncheckedTasks.add(0,task)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as List
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id
+    }
+
+
 }

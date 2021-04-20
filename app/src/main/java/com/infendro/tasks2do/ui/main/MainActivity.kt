@@ -14,9 +14,11 @@ import com.infendro.tasks2do.*
 import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.Connection.Account
 import com.infendro.tasks2do.Connection.Connection.Companion.hasInternetConnection
+import com.infendro.tasks2do.Notification.Notification
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.coroutines.*
 import java.io.FileNotFoundException
+import java.time.LocalDate
 
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         lateinit var lists : Lists
 
         fun save(activity: Activity){
+            val lists  = lists
             Storage.saveToPhone(activity, lists)
         }
     }
@@ -41,6 +44,27 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         Account.username = sharedPreferences.getString(getString(R.string.username_key),"")?:""
         Account.password = sharedPreferences.getString(getString(R.string.password_key),"")?:""
 
+        changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
+
+        if(sharedPreferences.getBoolean("first_time", true)){
+            registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted: Boolean ->
+                if(!isGranted) {
+                    Toast.makeText(this, "You can grant location permissions in your settings later!", Toast.LENGTH_LONG).show() //TODO
+                }
+            }.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            sharedPreferences.edit().putBoolean("first_time", false).apply()
+        }
+
+        load()
+
+        Notification.createNotificationChannel(this)
+        Notification.notifyTasksToday(this, lists.getNumberOfOpenTasksToday())
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+
+    fun load() {
         //load
         lists = try {
             Storage.loadFromPhone(activity)
@@ -61,20 +85,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             }else{
                 //TODO
             }
-        }
-
-        changeTheme(sharedPreferences.getString(getString(R.string.theme_key),getString(R.string.system_val)))
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        if(sharedPreferences.getBoolean("first_time", true)){
-            registerForActivityResult(ActivityResultContracts.RequestPermission()){ isGranted: Boolean ->
-                if(!isGranted) {
-                    Toast.makeText(this, "You can grant location permissions in your settings later!", Toast.LENGTH_LONG).show() //TODO
-                }
-            }.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-            sharedPreferences.edit().putBoolean("first_time", false).apply()
         }
     }
 

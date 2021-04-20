@@ -2,6 +2,7 @@ package com.infendro.tasks2do
 
 import java.io.Serializable
 import java.lang.IndexOutOfBoundsException
+import java.time.LocalDate
 
 class Lists(val lists: ArrayList<List>, var currentList: Int) {
     constructor() : this(ArrayList<List>(),-1)
@@ -40,5 +41,15 @@ class Lists(val lists: ArrayList<List>, var currentList: Int) {
             }
         }
         return null
+    }
+
+    fun getNumberOfOpenTasksToday() : Int {
+        var numberOfOpenTasksToday = 0
+        lists.forEach {
+            it.uncheckedTasks.forEach { task ->
+                if(task.dueDate != null && task.dueDate!! <= LocalDate.now()) numberOfOpenTasksToday++
+            }
+        }
+        return numberOfOpenTasksToday
     }
 }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
@@ -18,23 +19,27 @@ import com.infendro.tasks2do.Connection.Connection
 import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 import com.infendro.tasks2do.ui.main.MainActivity
+import com.infendro.tasks2do.ui.main.main.FragmentMain
+import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FragmentDetail : Fragment() {
+    private var listId = 0
     private var list: List? = null
+    private var taskId = 0
     private var task: Task? = null
-    private var index = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            list = it.get("LIST") as List
-            task = it.get("TASK") as Task
-            index = it.getInt("INDEX")
+            listId = it.getInt("LIST_ID")
+            taskId = it.getInt("TASK_ID")
         }
+        list = MainActivity.lists.getList(listId)
+        task = list?.getTask(taskId)
     }
 
     override fun onCreateView(
@@ -55,12 +60,13 @@ class FragmentDetail : Fragment() {
         imageButtonDelete.setOnClickListener {
             when(task?.checked){
                 true -> {
-                    list?.checkedTasks?.removeAt(index)
+                    list?.checkedTasks?.remove(task!!)
                 }
                 false -> {
-                    list?.uncheckedTasks?.removeAt(index)
+                    list?.uncheckedTasks?.remove(task!!)
                 }
             }
+
             if(Account.isLoggedIn()){
                 if(Connection.hasInternetConnection(requireActivity())){
                     GlobalScope.launch(Dispatchers.IO) {
@@ -157,10 +163,10 @@ class FragmentDetail : Fragment() {
         imageButtonCheck.setOnClickListener {
             when(task?.checked){
                 true -> {
-                    list?.uncheck(index)
+                    list?.uncheck(task!!)
                 }
                 false -> {
-                    list?.check(index)
+                    list?.check(task!!)
                 }
             }
             setCheckedImage()
@@ -207,7 +213,8 @@ class FragmentDetail : Fragment() {
     }
 
     private fun navigateBack(){
-        MainActivity.save(requireActivity())
+        Storage.saveToPhone(requireActivity(),MainActivity.lists)
+        //MainActivity.save(requireActivity())
         requireActivity().currentFocus?.clearFocus()
         findNavController().navigate(R.id.action_fragmentDetail_to_fragment_Main)
     }

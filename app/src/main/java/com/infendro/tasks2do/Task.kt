@@ -59,22 +59,13 @@ class Task(var title: String, var details: String?, var dueDate: LocalDate?, var
 
         other as Task
 
-        if (title != other.title) return false
-        if (details != other.details) return false
-        if (dueDate != other.dueDate) return false
-        if (dueTime != other.dueTime) return false
-        if (checked != other.checked) return false
+        if (id != other.id) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = title.hashCode()
-        result = 31 * result + (details?.hashCode() ?: 0)
-        result = 31 * result + (dueDate?.hashCode() ?: 0)
-        result = 31 * result + (dueTime?.hashCode() ?: 0)
-        result = 31 * result + checked.hashCode()
-        return result
+        return id
     }
 
 

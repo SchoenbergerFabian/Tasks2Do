@@ -212,7 +212,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
 
         private fun bindLayout(task: Task){
             linearLayout.setOnClickListener {
-                val bundle = bundleOf("LIST" to list,"TASK" to task, "INDEX" to when(task.checked){true -> adapter.getCheckedIndex(adapterPosition) false -> adapter.getUncheckedIndex(adapterPosition)})
+                val bundle = bundleOf("LIST_ID" to list.id,"TASK_ID" to task.id)
                 activity.findNavController(R.id.nav).navigate(R.id.action_fragment_Main_to_fragmentDetail, bundle)
             }
         }
@@ -222,7 +222,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
                 buttonCheck.setOnClickListener(null)
                 when(task.checked){
                     true -> {
-                        list.uncheck(adapter.getCheckedIndex(adapterPosition))
+                        list.uncheck(task)
                         MainActivity.save(activity)
                         if(Account.isLoggedIn()){
                             if(Connection.hasInternetConnection(activity)){
@@ -250,7 +250,7 @@ class AdapterList(private val activity: Activity, private val list: List) : Recy
 
                     }
                     false -> {
-                        list.check(adapterPosition-1)
+                        list.check(task)
                         MainActivity.save(activity)
                         if(Account.isLoggedIn()){
                             if(Connection.hasInternetConnection(activity)){
