@@ -15,6 +15,7 @@ import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.Connection.Account
 import com.infendro.tasks2do.Connection.Connection.Companion.hasInternetConnection
 import com.infendro.tasks2do.Notification.Notification
+import com.infendro.tasks2do.ui.main.detail.ViewModelDetail
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.coroutines.*
 import java.io.FileNotFoundException
@@ -55,10 +56,11 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             sharedPreferences.edit().putBoolean("first_time", false).apply()
         }
 
+
         load()
 
-        Notification.createNotificationChannel(this)
-        Notification.notifyTasksToday(this, lists.getNumberOfOpenTasksToday())
+        Notification.createNotificationChannel(activity)
+        Notification.notifyTasksToday(activity, lists.getNumberOfOpenTasksToday())
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -74,13 +76,17 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         if(Account.isLoggedIn()){
             if(hasInternetConnection(this)){
                 GlobalScope.launch(Dispatchers.Main) {
-                    val lists = withContext(Dispatchers.IO){
+                    lists = withContext(Dispatchers.IO){
                         return@withContext Storage.getTodoLists(lists.currentList)
                     }
-                    Companion.lists = lists
                     save(activity)
-                    val model : ViewModelMain by viewModels()
-                    model.loadCurrentList()
+                    val modelMain : ViewModelMain by viewModels()
+                    modelMain.loadCurrentList()
+                    val modelDetail : ViewModelDetail by viewModels()
+                    if(modelDetail.listId.value!=null&&modelDetail.taskId.value!=null){
+                        modelDetail.setList(lists.getList(modelDetail.listId.value!!))
+                        modelDetail.setTask(modelDetail.list.value?.getTask(modelDetail.taskId.value!!))
+                    }
                 }
             }else{
                 //TODO

@@ -32,6 +32,7 @@ class FragmentMain : Fragment() {
         lateinit var fabCreate : FloatingActionButton
 
         fun updateUI(list: List?){
+            val activity = activity
             if(list!=null){
 
                 adapter = AdapterList(
@@ -84,16 +85,10 @@ class FragmentMain : Fragment() {
         Companion.recyclerView=recyclerView
         Companion.fabCreate=fabCreate
 
-        GlobalScope.launch(Dispatchers.IO) {
-            MainActivity.lists = Storage.getTodoLists(MainActivity.lists.currentList)
-            MainActivity.save(requireActivity())
-            withContext(Dispatchers.Main){
-                val model : ViewModelMain by activityViewModels()
-                model.loadCurrentList()
-                model.list.observe(viewLifecycleOwner) { list ->
-                    updateUI(list)
-                }
-            }
+        val model : ViewModelMain by activityViewModels()
+        model.loadCurrentList()
+        model.list.observe(viewLifecycleOwner) { list ->
+            updateUI(list)
         }
     }
 

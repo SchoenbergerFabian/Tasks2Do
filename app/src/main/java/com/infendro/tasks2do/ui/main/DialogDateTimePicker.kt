@@ -23,106 +23,106 @@ import java.util.*
 
 class DialogDateTimePicker(private val activity: Activity, private val task: Task?) : Dialog(activity) {
 
-    private var tempDueDate: LocalDate? = task?.dueDate
-    private var tempDueTime: LocalTime? = task?.dueTime
+  private var tempDueDate: LocalDate? = task?.dueDate
+  private var tempDueTime: LocalTime? = task?.dueTime
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_datetimepicker)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.dialog_datetimepicker)
 
-        //<date>
-        tempDueDate = tempDueDate ?: LocalDate.now()
-        val calendar = Calendar.getInstance()
-        calendar.set(tempDueDate!!.year,tempDueDate!!.monthValue-1,tempDueDate!!.dayOfMonth)
-        datePicker.date = calendar.timeInMillis
+    //<date>
+    tempDueDate = tempDueDate ?: LocalDate.now()
+    val calendar = Calendar.getInstance()
+    calendar.set(tempDueDate!!.year,tempDueDate!!.monthValue-1,tempDueDate!!.dayOfMonth)
+    datePicker.date = calendar.timeInMillis
 
-        datePicker.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            tempDueDate = LocalDate.of(year, month+1, dayOfMonth)
-        }
-
-        //<time>
-        val dueTimeString = getDueTimeString(activity.getString(R.string.pattern_time))
-        if(dueTimeString!=null){
-            showTime(dueTimeString)
-        }
-
-        dueTime.setOnClickListener {
-            showTimePicker()
-        }
-
-        imageButtonRemove.setOnClickListener{
-            tempDueTime=null
-            hideTime()
-        }
-        //</time>
-
-        buttonCancelDate.setOnClickListener{
-            dismiss()
-        }
-
-        buttonDoneDate.setOnClickListener{
-            task?.dueDate = tempDueDate
-            task?.dueTime = tempDueTime
-            dismiss()
-        }
-        //</date>
+    datePicker.setOnDateChangeListener { _, year, month, dayOfMonth ->
+      tempDueDate = LocalDate.of(year, month+1, dayOfMonth)
     }
 
-    private var shown = false
-
-    private fun showTimePicker(){
-        if(!shown){
-            setUpTimePicker()
-            shown = true
-        }
-
-        tempDueTime = tempDueTime?:LocalTime.now()
-        timePicker.hour = tempDueTime!!.hour
-        timePicker.minute = tempDueTime!!.minute
-
-        date.visibility = View.GONE
-        time.visibility = View.VISIBLE
+    //<time>
+    val dueTimeString = getDueTimeString(activity.getString(R.string.pattern_time))
+    if(dueTimeString!=null){
+      showTime(dueTimeString)
     }
 
-    private fun setUpTimePicker(){
-
-        timePicker.setIs24HourView(true)
-
-        buttonCancelTime.setOnClickListener {
-            hideTimePicker()
-        }
-
-        buttonDoneTime.setOnClickListener {
-            tempDueTime = LocalTime.of(timePicker.hour,timePicker.minute)
-            textViewDueTime.hint = ""
-            textViewDueTime.text = tempDueTime?.format(DateTimeFormatter.ofPattern(activity.getString(R.string.pattern_time)))
-
-            imageButtonRemove.visibility=View.VISIBLE
-
-            hideTimePicker()
-        }
+    dueTime.setOnClickListener {
+      showTimePicker()
     }
 
-    private fun hideTimePicker(){
-        timePicker.findViewById<View>(Resources.getSystem().getIdentifier("hours", "id", "android")).performClick()
-        time.visibility = View.GONE
-        date.visibility = View.VISIBLE
+    imageButtonRemove.setOnClickListener{
+      tempDueTime=null
+      hideTime()
+    }
+    //</time>
+
+    buttonCancelDate.setOnClickListener{
+      dismiss()
     }
 
-    private fun showTime(dueTime : String){
-        textViewDueTime.hint = ""
-        textViewDueTime.text = dueTime
-        imageButtonRemove.visibility = View.VISIBLE
+    buttonDoneDate.setOnClickListener{
+      task?.dueDate = tempDueDate
+      task?.dueTime = tempDueTime
+      dismiss()
+    }
+    //</date>
+  }
+
+  private var shown = false
+
+  private fun showTimePicker(){
+    if(!shown){
+      setUpTimePicker()
+      shown = true
     }
 
-    private fun hideTime(){
-        imageButtonRemove.visibility=View.GONE
-        textViewDueTime.hint=activity.getString(R.string.add_time)
-        textViewDueTime.text=""
+    tempDueTime = tempDueTime?:LocalTime.now()
+    timePicker.hour = tempDueTime!!.hour
+    timePicker.minute = tempDueTime!!.minute
+
+    date.visibility = View.GONE
+    time.visibility = View.VISIBLE
+  }
+
+  private fun setUpTimePicker(){
+
+    timePicker.setIs24HourView(true)
+
+    buttonCancelTime.setOnClickListener {
+      hideTimePicker()
     }
 
-    private fun getDueTimeString(patternTime: String) : String? {
-        return tempDueTime?.format(DateTimeFormatter.ofPattern(patternTime))
+    buttonDoneTime.setOnClickListener {
+      tempDueTime = LocalTime.of(timePicker.hour,timePicker.minute)
+      textViewDueTime.hint = ""
+      textViewDueTime.text = tempDueTime?.format(DateTimeFormatter.ofPattern(activity.getString(R.string.pattern_time)))
+
+      imageButtonRemove.visibility=View.VISIBLE
+
+      hideTimePicker()
     }
+  }
+
+  private fun hideTimePicker(){
+    timePicker.findViewById<View>(Resources.getSystem().getIdentifier("hours", "id", "android")).performClick()
+    time.visibility = View.GONE
+    date.visibility = View.VISIBLE
+  }
+
+  private fun showTime(dueTime : String){
+    textViewDueTime.hint = ""
+    textViewDueTime.text = dueTime
+    imageButtonRemove.visibility = View.VISIBLE
+  }
+
+  private fun hideTime(){
+    imageButtonRemove.visibility=View.GONE
+    textViewDueTime.hint=activity.getString(R.string.add_time)
+    textViewDueTime.text=""
+  }
+
+  private fun getDueTimeString(patternTime: String) : String? {
+    return tempDueTime?.format(DateTimeFormatter.ofPattern(patternTime))
+  }
 
 }

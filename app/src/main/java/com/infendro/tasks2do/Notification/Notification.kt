@@ -55,7 +55,7 @@ class Notification {
 
         private const val ID_TASKS_TODAY = 0
         fun notifyTasksToday(activity: Activity, numberOfTasksToday: Int){
-            val builder = buildNotification(activity, R.drawable.ic_list_bulleted,"Tasks open today:", "$numberOfTasksToday", NotificationCompat.PRIORITY_HIGH)
+            val builder = buildNotification(activity, R.drawable.ic_list_bulleted,"Tasks open today:", "$numberOfTasksToday", NotificationCompat.PRIORITY_LOW)
             notifyIfAllowed(activity, ID_TASKS_TODAY, builder)
         }
 

@@ -12,6 +12,7 @@ class ViewModelMain : ViewModel() {
     }
 
     fun loadCurrentList(){
+        val lists = MainActivity.lists
         list.value = MainActivity.lists.getCurrentList()
     }
 }

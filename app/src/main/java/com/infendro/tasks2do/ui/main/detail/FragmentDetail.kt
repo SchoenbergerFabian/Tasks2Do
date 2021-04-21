@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.infendro.tasks2do.R
 import com.infendro.tasks2do.Task
@@ -19,6 +20,7 @@ import com.infendro.tasks2do.Connection.Connection
 import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.ui.main.DialogDateTimePicker
 import com.infendro.tasks2do.ui.main.MainActivity
+import com.infendro.tasks2do.ui.main.detail.ViewModelDetail
 import com.infendro.tasks2do.ui.main.main.FragmentMain
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.coroutines.Dispatchers
@@ -27,19 +29,21 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FragmentDetail : Fragment() {
-    private var listId = 0
     private var list: List? = null
-    private var taskId = 0
     private var task: Task? = null
+
+    private val model : ViewModelDetail by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            listId = it.getInt("LIST_ID")
-            taskId = it.getInt("TASK_ID")
+            model.setListId(it.getInt("LIST_ID"))
+            list = MainActivity.lists.getList(it.getInt("LIST_ID"))
+            model.setList(list)
+            model.setTaskId(it.getInt("TASK_ID"))
+            task = list?.getTask(it.getInt("TASK_ID"))
+            model.setTask(task)
         }
-        list = MainActivity.lists.getList(listId)
-        task = list?.getTask(taskId)
     }
 
     override fun onCreateView(
@@ -52,6 +56,13 @@ class FragmentDetail : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        model.list.observe(viewLifecycleOwner) { list ->
+            this.list = list
+        }
+        model.task.observe(viewLifecycleOwner) { task ->
+            this.task = task
+        }
 
         imageButtonBack.setOnClickListener {
             navigateBack()
@@ -213,8 +224,7 @@ class FragmentDetail : Fragment() {
     }
 
     private fun navigateBack(){
-        Storage.saveToPhone(requireActivity(),MainActivity.lists)
-        //MainActivity.save(requireActivity())
+        MainActivity.save(requireActivity())
         requireActivity().currentFocus?.clearFocus()
         findNavController().navigate(R.id.action_fragmentDetail_to_fragment_Main)
     }
