@@ -2,6 +2,7 @@ package com.infendro.tasks2do.ui.main
 
 import android.Manifest
 import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.infendro.tasks2do.Connection.Storage
 import com.infendro.tasks2do.Connection.Account
 import com.infendro.tasks2do.Connection.Connection.Companion.hasInternetConnection
 import com.infendro.tasks2do.Notification.Notification
+import com.infendro.tasks2do.services.ProximityAndDueService
 import com.infendro.tasks2do.ui.main.detail.ViewModelDetail
 import com.infendro.tasks2do.ui.main.main.ViewModelMain
 import kotlinx.coroutines.*
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         }
     }
 
+    private lateinit var proximityAndDueService: Intent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         activity = this
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
@@ -56,14 +60,26 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
             sharedPreferences.edit().putBoolean("first_time", false).apply()
         }
 
-
         load()
 
+        Notification.allowed = sharedPreferences.getBoolean(getString(R.string.notifications_key),true)
         Notification.createNotificationChannel(activity)
         Notification.notifyTasksToday(activity, lists.getNumberOfOpenTasksToday())
 
+        startProximityAndDueService()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+    }
+
+    fun startProximityAndDueService() {
+        proximityAndDueService = Intent(this,ProximityAndDueService::class.java)
+        proximityAndDueService.putExtra("LISTS", lists)
+        startService(proximityAndDueService)
+    }
+
+    fun stopProximityAndDueService() {
+        stopService(proximityAndDueService)
     }
 
     fun load() {
@@ -79,7 +95,12 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                     lists = withContext(Dispatchers.IO){
                         return@withContext Storage.getTodoLists(lists.currentList)
                     }
+
+                    stopProximityAndDueService()
+                    startProximityAndDueService()
+
                     save(activity)
+
                     val modelMain : ViewModelMain by viewModels()
                     modelMain.loadCurrentList()
                     val modelDetail : ViewModelDetail by viewModels()

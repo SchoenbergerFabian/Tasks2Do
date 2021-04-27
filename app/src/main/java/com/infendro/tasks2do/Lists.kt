@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.lang.IndexOutOfBoundsException
 import java.time.LocalDate
 
-class Lists(val lists: ArrayList<List>, var currentList: Int) {
+class Lists(val lists: ArrayList<List>, var currentList: Int) : Serializable {
     constructor() : this(ArrayList<List>(),-1)
 
     fun addList(list: List) {
